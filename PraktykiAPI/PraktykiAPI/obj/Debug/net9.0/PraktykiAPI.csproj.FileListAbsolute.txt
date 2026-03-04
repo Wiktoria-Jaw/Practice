@@ -1,0 +1,8 @@
+C:\Users\Wiktoria\Desktop\Praktyki\PraktykiAPI\PraktykiAPI\obj\Debug\net9.0\PraktykiAPI.csproj.AssemblyReference.cache
+C:\Users\Wiktoria\Desktop\Praktyki\PraktykiAPI\PraktykiAPI\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\Wiktoria\Desktop\Praktyki\PraktykiAPI\PraktykiAPI\obj\Debug\net9.0\PraktykiAPI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Wiktoria\Desktop\Praktyki\PraktykiAPI\PraktykiAPI\obj\Debug\net9.0\PraktykiAPI.AssemblyInfoInputs.cache
+C:\Users\Wiktoria\Desktop\Praktyki\PraktykiAPI\PraktykiAPI\obj\Debug\net9.0\PraktykiAPI.AssemblyInfo.cs
+C:\Users\Wiktoria\Desktop\Praktyki\PraktykiAPI\PraktykiAPI\obj\Debug\net9.0\PraktykiAPI.csproj.CoreCompileInputs.cache
+C:\Users\Wiktoria\Desktop\Praktyki\PraktykiAPI\PraktykiAPI\obj\Debug\net9.0\PraktykiAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Wiktoria\Desktop\Praktyki\PraktykiAPI\PraktykiAPI\obj\Debug\net9.0\PraktykiAPI.MvcApplicationPartsAssemblyInfo.cache
