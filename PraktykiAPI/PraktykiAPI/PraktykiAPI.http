@@ -1,0 +1,22 @@
+@PraktykiAPI_HostAddress = https://localhost:7164
+
+GET {{PraktykiAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/employees
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/employees/dayoff/{date}
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/employees/dayoff/2026-03-03
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/employees/dayoff/2026-03-03
+
+###
