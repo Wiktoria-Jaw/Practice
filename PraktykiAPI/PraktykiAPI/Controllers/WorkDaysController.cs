@@ -21,7 +21,7 @@ namespace PraktykiAPI.Controllers
             _context = context;
         }
 
-        [HttpGet("workday/{date}/{id}")]
+        [HttpGet("workday/admin/{id}/{date}")]
         public async Task<IActionResult> GetWorkdayLength(DateOnly date, int id)
         {
             var workday = await _context.Work_Timetable.Where(w => _context.Employees.Any(e => e.ID == w.Employee_Id && w.Employee_Id == id && w.Date == date)).Select(w => new {Duration = w.Work_End_Hour - w.Work_Start_Hour}).ToListAsync();
@@ -29,7 +29,7 @@ namespace PraktykiAPI.Controllers
             return Ok(workday);
         }
 
-        [HttpGet("workday/{date_start}/{date_end}/{id}")]
+        [HttpGet("workday/admin/{id}/{date_start}/{date_end}")]
         public async Task<IActionResult> GetWorkdayLengthWeek(DateOnly date_start, DateOnly date_end, int id)
         {
             var workdays = await _context.Work_Timetable.Where(w => _context.Employees.Any(e=> e.ID == w.Employee_Id && w.Date >= date_start && w.Date <= date_end && w.Employee_Id == id)).Select(w=> new { w.Date, Duration = w.Work_End_Hour - w.Work_Start_Hour }).ToListAsync();
@@ -48,7 +48,7 @@ namespace PraktykiAPI.Controllers
             return Ok(WorkDuration);
         }
 
-        [HttpGet("workday/{month}/{id}")]
+        [HttpGet("workday/admin/{id}/{month}")]
         public async Task<IActionResult> GetWorkdayLengthMonth(int month, int id)
         {
             var workdays = await _context.Work_Timetable.Where(w=> _context.Employees.Any(e=> e.ID == w.Employee_Id && w.Date.Month == month && w.Employee_Id == id)).Select(w => new {w.Date, Duration = w.Work_End_Hour - w.Work_Start_Hour}).ToListAsync();
@@ -67,85 +67,6 @@ namespace PraktykiAPI.Controllers
 
             return Ok(workDuration);
         }
-
-        // GET: api/WorkDays
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<WorkDay>>> GetWork_Timetable()
-        //{
-        //    return await _context.Work_Timetable.ToListAsync();
-        //}
-
-        // GET: api/WorkDays/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<WorkDay>> GetWorkDay(int id)
-        //{
-        //    var workDay = await _context.Work_Timetable.FindAsync(id);
-
-        //    if (workDay == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return workDay;
-        //}
-
-        // PUT: api/WorkDays/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutWorkDay(int id, WorkDay workDay)
-        //{
-        //    if (id != workDay.ID)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(workDay).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!WorkDayExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
-        // POST: api/WorkDays
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<WorkDay>> PostWorkDay(WorkDay workDay)
-        //{
-        //    _context.Work_Timetable.Add(workDay);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetWorkDay", new { id = workDay.ID }, workDay);
-        //}
-
-        // DELETE: api/WorkDays/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteWorkDay(int id)
-        //{
-        //    var workDay = await _context.Work_Timetable.FindAsync(id);
-        //    if (workDay == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Work_Timetable.Remove(workDay);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
 
         private bool WorkDayExists(int id)
         {

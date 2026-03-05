@@ -20,7 +20,7 @@ namespace PraktykiAPI.Controllers
             _context = context;
         }
 
-        //zwraca wszystkie dni wolne ZMIENIC NA MEISIAC
+        //zwraca wszystkie dni wolne
         [HttpGet("admin/dayoff")]
         public async Task<IActionResult> AdminGetDays_Off()
         {
@@ -45,7 +45,6 @@ namespace PraktykiAPI.Controllers
             return Ok(daysoff);
         }
 
-        //Zmienia status dla dnia wolnego o
         [HttpPut("admin/dayoff/{id}/{status}")]
         public async Task<IActionResult> ChangeValueDays_Off(int id, string status)
         {
@@ -61,84 +60,7 @@ namespace PraktykiAPI.Controllers
             return Ok(daysoff);
         }
 
-        // GET: api/Day_Off
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Day_Off>>> GetDays_Off()
-        //{
-        //    return await _context.Days_Off.ToListAsync();
-        //}
-
-        // GET: api/Day_Off/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Day_Off>> GetDay_Off(int id)
-        //{
-        //    var day_Off = await _context.Days_Off.FindAsync(id);
-
-        //    if (day_Off == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return day_Off;
-        //}
-
-        // PUT: api/Day_Off/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutDay_Off(int id, Day_Off day_Off)
-        //{
-        //    if (id != day_Off.ID)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(day_Off).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!Day_OffExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
-        // POST: api/Day_Off
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Day_Off>> PostDay_Off(Day_Off day_Off)
-        //{
-        //    _context.Days_Off.Add(day_Off);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetDay_Off", new { id = day_Off.ID }, day_Off);
-        //}
-
-        //// DELETE: api/Day_Off/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteDay_Off(int id)
-        //{
-        //    var day_Off = await _context.Days_Off.FindAsync(id);
-        //    if (day_Off == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Days_Off.Remove(day_Off);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
+        //1. zwrocic dni wolnego w ciagu dnia/tygodnia/miesiaca dla tego id pracownika
 
         private bool Day_OffExists(int id)
         {
