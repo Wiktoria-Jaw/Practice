@@ -14,9 +14,10 @@ namespace PraktykiAPI.Models
         public TimeOnly Work_Start_Hour { get; set; }
         [Required]
         public TimeOnly Work_End_Hour { get; set; }
-
         [Required]
         public int Employee_Id { get; set; }
+
+        [ForeignKey("Employee_Id")]
         public Employee Employee { get; set; }
 
         public ICollection<Break> Breaks { get; set; }

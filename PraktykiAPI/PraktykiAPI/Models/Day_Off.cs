@@ -12,10 +12,11 @@ namespace PraktykiAPI.Models
         public DateOnly Start_Date { get; set; }
         [Required]
         public DateOnly End_Date { get; set; }
-        public string Status { get; set; } = "pending";
-
+        public string Status { get; set; }
         [Required]
         public int Employee_ID { get; set; }
+
+        [ForeignKey("Employee_ID")]
         public Employee Employee { get; set; }
     }
 }

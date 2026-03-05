@@ -9,14 +9,13 @@ namespace PraktykiAPI.Models
         [Key]
         public int ID { get; set; }
         [Required]
-        public DateOnly Date {  get; set; }
-        [Required]
         public TimeOnly Break_Start_Hour { get; set; }
         [Required]
         public TimeOnly Break_End_Hour { get; set; }
-
         [Required]
         public int WorkDay_Id { get; set; }
+
+        [ForeignKey("WorkDay_Id")]
         public WorkDay WorkDay { get; set; }
     }
 }

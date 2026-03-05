@@ -18,9 +18,10 @@ namespace PraktykiAPI.Models
         public int Is_LogIn { get; set; }
         [Required]
         public int Is_Active { get; set; }
-
         [Required]
         public int Employee_ID { get; set; }
+
+        [ForeignKey("Employee_ID")]
         public Employee Employee { get; set; }
     }
 }
