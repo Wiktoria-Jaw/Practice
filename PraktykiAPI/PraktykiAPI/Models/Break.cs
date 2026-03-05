@@ -10,8 +10,7 @@ namespace PraktykiAPI.Models
         public int ID { get; set; }
         [Required]
         public TimeOnly Break_Start_Hour { get; set; }
-        [Required]
-        public TimeOnly Break_End_Hour { get; set; }
+        public TimeOnly? Break_End_Hour { get; set; }
         [Required]
         public int WorkDay_Id { get; set; }
 

@@ -11,11 +11,11 @@ namespace PraktykiAPI.Models
         [Required]
         public DateOnly Date { get; set; }
         [Required]
-        public TimeOnly Work_Start_Hour { get; set; }
-        [Required]
-        public TimeOnly Work_End_Hour { get; set; }
-        [Required]
         public int Employee_Id { get; set; }
+        [Required]
+        public TimeOnly Work_Start_Hour { get; set; }
+        public TimeOnly? Work_End_Hour { get; set; }
+        
 
         [ForeignKey("Employee_Id")]
         public Employee Employee { get; set; }

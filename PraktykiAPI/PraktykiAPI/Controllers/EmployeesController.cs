@@ -20,29 +20,29 @@ namespace PraktykiAPI.Controllers
             _context = context;
         }
 
-        [HttpGet("employee/dayoff")]
-        public async Task<IActionResult> GetDaysOff()
-        {
-            var employee = await _context.Employees.Where(e => _context.Days_Off.Any(d => d.Employee_ID == e.ID && d.Status == "Accepted")).Select(e => new {e.Name, e.Surname}).ToListAsync();
+        //[HttpGet("employee/dayoff")]
+        //public async Task<IActionResult> GetDaysOff()
+        //{
+        //    var employee = await _context.Employees.Where(e => _context.Days_Off.Any(d => d.Employee_ID == e.ID && d.Status == "Accepted")).Select(e => new {e.Name, e.Surname}).ToListAsync();
 
-            return Ok(employee);
-        }
+        //    return Ok(employee);
+        //}
 
-        [HttpGet("admin/employee/dayoff/{status}")]
-        public async Task<IActionResult> AdminGetDaysOff(DateOnly date, String status)
-        {
-            var employee = await _context.Employees.Where(e => _context.Days_Off.Any(d=> d.Employee_ID == e.ID && d.Status == status)).Select(e => new {e.Name, e.Surname}).ToListAsync();
+        //[HttpGet("admin/employee/dayoff/{status}")]
+        //public async Task<IActionResult> AdminGetDaysOff(DateOnly date, String status)
+        //{
+        //    var employee = await _context.Employees.Where(e => _context.Days_Off.Any(d=> d.Employee_ID == e.ID && d.Status == status)).Select(e => new {e.Name, e.Surname}).ToListAsync();
 
-            return Ok(employee);
-        }
+        //    return Ok(employee);
+        //}
 
-        [HttpGet("admin/employee/{id}")]
-        public async Task<IActionResult> AdminGetEmployeeData(int id)
-        {
-            var employee = await _context.Employees.FindAsync(id);
+        //[HttpGet("admin/employee/{id}")]
+        //public async Task<IActionResult> AdminGetEmployeeData(int id)
+        //{
+        //    var employee = await _context.Employees.FindAsync(id);
 
-            return Ok(employee);
-        }
+        //    return Ok(employee);
+        //}
 
         private bool EmployeeExists(int id)
         {
