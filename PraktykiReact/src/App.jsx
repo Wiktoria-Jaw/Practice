@@ -1,5 +1,6 @@
 import Header from "./components/Header.jsx"
 import MainContet from "./components/MainContent.jsx"
+<<<<<<< HEAD
 import { getEmployeeData } from "./api/EmployeeAPI.js"
 import { useState, useEffect } from "react"
 
@@ -23,6 +24,13 @@ export default function App(){
     return (
       <>
         <Header Name={employee.Name} Surname={employee.Surname}/>
+=======
+
+export default function App(){
+    return (
+      <>
+        <Header />
+>>>>>>> d32fa4a11364822f7ee53419ad19ebd09de9d703
         <MainContet />
       </>
     )
