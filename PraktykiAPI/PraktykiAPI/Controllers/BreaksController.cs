@@ -29,14 +29,14 @@ namespace PraktykiAPI.Controllers
 
             if(workday == null)
             {
-                return BadRequest("Nie ma takiego dnia pracy. Zapomnial*s rozpoczac?");
+                return BadRequest("There is no such workday. Did you forget to start?");
             }
 
             bool breakRunning = await _context.Break_Timetable.AnyAsync(b => b.WorkDay_Id == workday.ID && b.Break_End_Hour == null);
 
             if (breakRunning)
             {   
-                return BadRequest("Przerwa juz trwa.");
+                return BadRequest("Break already started.");
             }
 
             Break newBreak = new Break()
@@ -60,14 +60,14 @@ namespace PraktykiAPI.Controllers
 
             if (workday == null)
             {
-                return BadRequest("Nie ma takiego dnia pracy. Zapomnial*s rozpoczac?");
+                return BadRequest("There is no such workday. Did you forget to start?");
             }
 
             var breakCur = await _context.Break_Timetable.FirstOrDefaultAsync(b => b.WorkDay_Id == workday.ID && b.Break_End_Hour == null);
 
             if (breakCur == null)
             {
-                return BadRequest("Brak aktywnej przerwy");
+                return BadRequest("No active break");
             }
 
             breakCur.Break_End_Hour = nowTime;

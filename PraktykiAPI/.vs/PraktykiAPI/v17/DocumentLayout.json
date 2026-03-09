@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\Wiktoria\\Desktop\\Praktyki\\PraktykiAPI\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{46366B6C-96A7-4D57-AD42-4C1172A90FAA}|PraktykiAPI\\PraktykiAPI.csproj|c:\\users\\wiktoria\\desktop\\praktyki\\praktykiapi\\praktykiapi\\controllers\\workdayscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{46366B6C-96A7-4D57-AD42-4C1172A90FAA}|PraktykiAPI\\PraktykiAPI.csproj|solutionrelative:praktykiapi\\controllers\\workdayscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{46366B6C-96A7-4D57-AD42-4C1172A90FAA}|PraktykiAPI\\PraktykiAPI.csproj|c:\\users\\wiktoria\\desktop\\praktyki\\praktykiapi\\praktykiapi\\controllers\\breakscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{46366B6C-96A7-4D57-AD42-4C1172A90FAA}|PraktykiAPI\\PraktykiAPI.csproj|solutionrelative:praktykiapi\\controllers\\breakscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{46366B6C-96A7-4D57-AD42-4C1172A90FAA}|PraktykiAPI\\PraktykiAPI.csproj|c:\\users\\wiktoria\\desktop\\praktyki\\praktykiapi\\praktykiapi\\controllers\\workdayscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{46366B6C-96A7-4D57-AD42-4C1172A90FAA}|PraktykiAPI\\PraktykiAPI.csproj|solutionrelative:praktykiapi\\controllers\\workdayscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{46366B6C-96A7-4D57-AD42-4C1172A90FAA}|PraktykiAPI\\PraktykiAPI.csproj|c:\\users\\wiktoria\\desktop\\praktyki\\praktykiapi\\praktykiapi\\models\\workday.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{46366B6C-96A7-4D57-AD42-4C1172A90FAA}|PraktykiAPI\\PraktykiAPI.csproj|solutionrelative:praktykiapi\\models\\workday.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{46366B6C-96A7-4D57-AD42-4C1172A90FAA}|PraktykiAPI\\PraktykiAPI.csproj|c:\\users\\wiktoria\\desktop\\praktyki\\praktykiapi\\praktykiapi\\models\\break.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -17,10 +21,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{46366B6C-96A7-4D57-AD42-4C1172A90FAA}|PraktykiAPI\\PraktykiAPI.csproj|c:\\users\\wiktoria\\desktop\\praktyki\\praktykiapi\\praktykiapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{46366B6C-96A7-4D57-AD42-4C1172A90FAA}|PraktykiAPI\\PraktykiAPI.csproj|solutionrelative:praktykiapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{46366B6C-96A7-4D57-AD42-4C1172A90FAA}|PraktykiAPI\\PraktykiAPI.csproj|c:\\users\\wiktoria\\desktop\\praktyki\\praktykiapi\\praktykiapi\\models\\workday.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{46366B6C-96A7-4D57-AD42-4C1172A90FAA}|PraktykiAPI\\PraktykiAPI.csproj|solutionrelative:praktykiapi\\models\\workday.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{46366B6C-96A7-4D57-AD42-4C1172A90FAA}|PraktykiAPI\\PraktykiAPI.csproj|c:\\users\\wiktoria\\desktop\\praktyki\\praktykiapi\\praktykiapi\\controllers\\day_offcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -46,11 +46,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Break.cs",
               "DocumentMoniker": "C:\\Users\\Wiktoria\\Desktop\\Praktyki\\PraktykiAPI\\PraktykiAPI\\Models\\Break.cs",
               "RelativeDocumentMoniker": "PraktykiAPI\\Models\\Break.cs",
@@ -58,25 +58,24 @@
               "RelativeToolTip": "PraktykiAPI\\Models\\Break.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-05T14:04:16.79Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-05T14:04:16.79Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "BreaksController.cs",
               "DocumentMoniker": "C:\\Users\\Wiktoria\\Desktop\\Praktyki\\PraktykiAPI\\PraktykiAPI\\Controllers\\BreaksController.cs",
               "RelativeDocumentMoniker": "PraktykiAPI\\Controllers\\BreaksController.cs",
               "ToolTip": "C:\\Users\\Wiktoria\\Desktop\\Praktyki\\PraktykiAPI\\PraktykiAPI\\Controllers\\BreaksController.cs",
               "RelativeToolTip": "PraktykiAPI\\Controllers\\BreaksController.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAUwEwAAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAABEAAAAAAAAAAAAQwCYAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-05T14:00:32.255Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "WorkDay.cs",
               "DocumentMoniker": "C:\\Users\\Wiktoria\\Desktop\\Praktyki\\PraktykiAPI\\PraktykiAPI\\Models\\WorkDay.cs",
               "RelativeDocumentMoniker": "PraktykiAPI\\Models\\WorkDay.cs",
@@ -89,7 +88,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Wiktoria\\Desktop\\Praktyki\\PraktykiAPI\\PraktykiAPI\\appsettings.json",
               "RelativeDocumentMoniker": "PraktykiAPI\\appsettings.json",
@@ -97,18 +96,17 @@
               "RelativeToolTip": "PraktykiAPI\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-03-05T13:06:36.603Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-05T13:06:36.603Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "WorkDaysController.cs",
               "DocumentMoniker": "C:\\Users\\Wiktoria\\Desktop\\Praktyki\\PraktykiAPI\\PraktykiAPI\\Controllers\\WorkDaysController.cs",
               "RelativeDocumentMoniker": "PraktykiAPI\\Controllers\\WorkDaysController.cs",
               "ToolTip": "C:\\Users\\Wiktoria\\Desktop\\Praktyki\\PraktykiAPI\\PraktykiAPI\\Controllers\\WorkDaysController.cs",
               "RelativeToolTip": "PraktykiAPI\\Controllers\\WorkDaysController.cs",
-              "ViewState": "AgIAAC4AAAAAAAAAAAAqwEEAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAAAFUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-05T10:41:58.165Z",
               "EditorCaption": ""
@@ -123,8 +121,7 @@
               "RelativeToolTip": "PraktykiAPI\\Controllers\\Day_OffController.cs",
               "ViewState": "AgIAAC0AAAAAAAAAAAAcwC8AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-05T10:15:06.28Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-05T10:15:06.28Z"
             },
             {
               "$type": "Document",
@@ -148,8 +145,7 @@
               "RelativeToolTip": "PraktykiAPI\\Controllers\\EmployeesController.cs",
               "ViewState": "AgIAACEAAAAAAAAAAAAwwCsAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-05T08:12:47.061Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-05T08:12:47.061Z"
             },
             {
               "$type": "Document",
