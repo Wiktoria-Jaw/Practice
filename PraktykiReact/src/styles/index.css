@@ -41,6 +41,7 @@ button{
   font-weight: 500;
   border-radius: 5px;
   border: none;
+  margin: 20px;
 }
 
 button:hover{
@@ -48,14 +49,24 @@ button:hover{
   color: #1b1c1d;
 }
 
-.section{
+main{
   margin: 40px;
   padding: 10px;
   color: #dfe0e2;
   font-size: 1.5rem;
+  display: flex;
+  justify-content: space-evenly;
 }
 
-.timelap{
-  padding: 40px;
-  width: 140px;
+.buttonNInfo{
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  align-items: center;
+}
+
+.infoSpan{
+  align-self: center;
+  margin: 10px 20px;
+  text-align: center;
 }
