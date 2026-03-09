@@ -20,6 +20,14 @@ namespace PraktykiAPI.Controllers
             _context = context;
         }
 
+        [HttpGet("employee/{id}")]
+        public async Task<IActionResult> AdminGetEmployeeData(int id)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+
+            return Ok(employee);
+        }
+
         //[HttpGet("employee/dayoff")]
         //public async Task<IActionResult> GetDaysOff()
         //{
@@ -36,13 +44,7 @@ namespace PraktykiAPI.Controllers
         //    return Ok(employee);
         //}
 
-        //[HttpGet("admin/employee/{id}")]
-        //public async Task<IActionResult> AdminGetEmployeeData(int id)
-        //{
-        //    var employee = await _context.Employees.FindAsync(id);
 
-        //    return Ok(employee);
-        //}
 
         private bool EmployeeExists(int id)
         {
