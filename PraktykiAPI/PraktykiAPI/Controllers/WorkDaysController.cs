@@ -24,7 +24,7 @@ namespace PraktykiAPI.Controllers
         [HttpPost("emplPanel/workday/start/{emplID}")]
         public async Task<IActionResult> StartWorkday(int emplID)
         {
-            DateOnly now = DateOnly.FromDateTime(DateTime.UtcNow);
+            DateOnly now = DateOnly.FromDateTime(DateTime.Now);
             bool alreadyStarted = await _context.Work_Timetable.AnyAsync(w=>w.Employee_Id == emplID && w.Date == now);
 
             if (alreadyStarted)
@@ -36,7 +36,7 @@ namespace PraktykiAPI.Controllers
             {
                 Date = now,
                 Employee_Id = emplID,
-                Work_Start_Hour = TimeOnly.FromDateTime(DateTime.UtcNow),
+                Work_Start_Hour = TimeOnly.FromDateTime(DateTime.Now),
             };
             
             _context.Work_Timetable.Add(newWorkDay);
@@ -48,7 +48,7 @@ namespace PraktykiAPI.Controllers
         [HttpPut("emplPanel/workday/end/{emplID}")]
         public async Task<IActionResult> EndtWorkday(int emplID)
         {
-            DateOnly now = DateOnly.FromDateTime(DateTime.UtcNow);
+            DateOnly now = DateOnly.FromDateTime(DateTime.Now);
             var workday = await _context.Work_Timetable.FirstOrDefaultAsync(w => w.Employee_Id == emplID && w.Date == now);
 
             if (workday == null)
@@ -61,14 +61,31 @@ namespace PraktykiAPI.Controllers
                 return BadRequest("Workday already ended.");
             }
 
-            workday.Work_End_Hour = TimeOnly.FromDateTime(DateTime.UtcNow);
+            workday.Work_End_Hour = TimeOnly.FromDateTime(DateTime.Now);
 
             await _context.SaveChangesAsync();
 
             return Ok("Workday ended.");
         }
 
-        
+        [HttpGet("emplPanel/workday/status/{emplID}")]
+        public async Task<IActionResult> getWorkdayStatus(int emplID)
+        {
+            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+            var workday = await _context.Work_Timetable.FirstOrDefaultAsync(w => w.Employee_Id == emplID && w.Date == today);
+
+            if (workday == null)
+            {
+                return Ok("notStarted");
+            }
+
+            if (workday.Work_End_Hour == null)
+            {
+                return Ok("working");
+            }
+
+            return Ok("ended");
+        }
 
 
         //[HttpGet("workday/admin/{id}/{date}")]

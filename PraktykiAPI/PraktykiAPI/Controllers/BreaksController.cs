@@ -23,13 +23,13 @@ namespace PraktykiAPI.Controllers
         [HttpPost("emplPanel/workday/break/start/{emplID}")]
         public async Task<IActionResult> StartBreak(int emplID)
         {
-            DateOnly nowDate = DateOnly.FromDateTime(DateTime.UtcNow);
-            TimeOnly nowTime = TimeOnly.FromDateTime(DateTime.UtcNow);
+            DateOnly nowDate = DateOnly.FromDateTime(DateTime.Now);
+            TimeOnly nowTime = TimeOnly.FromDateTime(DateTime.Now);
             var workday = await _context.Work_Timetable.FirstOrDefaultAsync(w => w.Date == nowDate && w.Employee_Id == emplID && w.Work_End_Hour == null);
 
             if(workday == null)
             {
-                return BadRequest("There is no such workday. Did you forget to start?");
+                return BadRequest("No such workday/Workday already done today.");
             }
 
             bool breakRunning = await _context.Break_Timetable.AnyAsync(b => b.WorkDay_Id == workday.ID && b.Break_End_Hour == null);
@@ -54,13 +54,13 @@ namespace PraktykiAPI.Controllers
         [HttpPut("emplPanel/workday/break/end/{emplID}")]
         public async Task<IActionResult> EndBreak(int emplID)
         {
-            DateOnly nowDate = DateOnly.FromDateTime(DateTime.UtcNow);
-            TimeOnly nowTime = TimeOnly.FromDateTime(DateTime.UtcNow);
+            DateOnly nowDate = DateOnly.FromDateTime(DateTime.Now);
+            TimeOnly nowTime = TimeOnly.FromDateTime(DateTime.Now);
             var workday = await _context.Work_Timetable.FirstOrDefaultAsync(w => w.Date == nowDate && w.Employee_Id == emplID && w.Work_End_Hour == null);
 
             if (workday == null)
             {
-                return BadRequest("There is no such workday. Did you forget to start?");
+                return BadRequest("No such workday/Workday already done today.");
             }
 
             var breakCur = await _context.Break_Timetable.FirstOrDefaultAsync(b => b.WorkDay_Id == workday.ID && b.Break_End_Hour == null);
@@ -75,6 +75,27 @@ namespace PraktykiAPI.Controllers
             await _context.SaveChangesAsync();
 
             return Ok("Break ended.");
+        }
+
+        [HttpGet("emplPanel/workday/break/status/{emplID}")]
+        public async Task<IActionResult> getWorkdayStatus(int emplID)
+        {
+            DateOnly nowDate = DateOnly.FromDateTime(DateTime.Now);
+            var workday = await _context.Work_Timetable.FirstOrDefaultAsync(w => w.Date == nowDate && w.Employee_Id == emplID && w.Work_End_Hour == null);
+
+            if (workday == null)
+            {
+                return Ok("noBreakStarted");
+            }
+
+            var breakCur = await _context.Break_Timetable.FirstOrDefaultAsync(b => b.WorkDay_Id == workday.ID && b.Break_End_Hour == null);
+
+            if (breakCur == null)
+            {
+                return Ok("noBreakStarted");
+            }
+
+            return Ok("onBreak");
         }
 
         private bool BreakExists(int id)

@@ -1,11 +1,11 @@
 import Header from "./components/Header.jsx"
-import MainContet from "./components/MainContent.jsx"
+import MainContent from "./components/MainContent.jsx"
 import { getEmployeeData } from "./api/EmployeeAPI.js"
 import { useState, useEffect } from "react"
 
 export default function App(){
   const [employee, setEmployee] = useState({Name: "", Surname: ""});
-  const employeeId = 2;
+  const employeeId = 4;
 
   useEffect(() => {
     const fetchData = async()=>{
@@ -23,7 +23,7 @@ export default function App(){
     return (
       <>
         <Header Name={employee.Name} Surname={employee.Surname}/>
-        <MainContet />
+        <MainContent emplID={employeeId}/>
       </>
     )
 }

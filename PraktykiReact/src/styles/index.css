@@ -17,6 +17,11 @@ header > h1{
   margin: 0;
 }
 
+header > h1 >span{
+  background-color: #bdbe57;
+  color: #1b1c1d;
+}
+
 .menu > a{
   padding: 0 10px;
   font-size: 1.4rem;

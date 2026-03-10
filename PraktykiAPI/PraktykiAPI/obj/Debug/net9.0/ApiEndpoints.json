@@ -32,6 +32,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "PraktykiAPI.Controllers.BreaksController",
+    "Method": "getWorkdayStatus",
+    "RelativePath": "api/Breaks/emplPanel/workday/break/status/{emplID}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "emplID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "PraktykiAPI.Controllers.EmployeesController",
     "Method": "AdminGetEmployeeData",
     "RelativePath": "api/Employees/employee/{id}",
@@ -68,6 +84,22 @@
     "Method": "StartWorkday",
     "RelativePath": "api/WorkDays/emplPanel/workday/start/{emplID}",
     "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "emplID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PraktykiAPI.Controllers.WorkDaysController",
+    "Method": "getWorkdayStatus",
+    "RelativePath": "api/WorkDays/emplPanel/workday/status/{emplID}",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [

@@ -1,50 +1,129 @@
 import Button from "./Button.jsx"
-import { startWorkday, endWorkday } from "../api/WorkDayAPI"
+import { startWorkday, endWorkday, statusWorkday } from "../api/WorkDayAPI"
 import { useState, useEffect} from "react"
-import { endBreak, startBreak } from "../api/BreakAPI.js"
+import { endBreak, startBreak, statusBreak } from "../api/BreakAPI.js"
 
-export default function MainContet(){
-
-    const [workState, setWorkState] = useState("notStarted")
+export default function MainContent(props){
+    const emplID = props.emplID;
+    const [workState, setWorkState] = useState(null)
     const [message, setMessage] = useState("");
 
+    useEffect(() => {
+        const fetchStatus = async () => {
+            try{
+                console.log("test pobierania statusu dnia");
+                const breakStatus = await statusBreak(emplID);
+                const workStatus = await statusWorkday(emplID);
+                console.log(breakStatus, workStatus)
+                let status;
+                if(workStatus === "notStarted" || workStatus === null){
+                    status = "notStarted"
+                }else if(workStatus === "ended"){
+                    status = "ended";
+                }else if(breakStatus === "onBreak"){
+                    status = "onBreak";
+                }else{
+                    status = "working";
+                }
+                console.log(status)
 
-    const handleAction = async (apiFunc, nextState) => {
+                setWorkState(status);
+            }catch(error){
+                setMessage(error.message);
+            }
+        }
+        fetchStatus();
+    }, [emplID]);
+
+    const handleAction = async (apiFunc) => {
         try{
+            console.log("emplID:",emplID);
             const result = await apiFunc(emplID);
+            console.log("Api wynik:", result);
             setMessage(result);
-            if (nextState){
-                setWorkState(nextState);
-            } 
+            
+            const breakStatus = await statusBreak(emplID);
+            const workStatus = await statusWorkday(emplID);
+            console.log(breakStatus, workStatus)
+            let status;
+            if(workStatus === "notStarted" || workStatus === null){
+                status = "notStarted";
+            }else if(workStatus === "ended"){
+                status = "ended";
+            }else if(breakStatus === "onBreak"){
+                status = "onBreak";
+            }else{
+                status = "working";
+            }
+            console.log(status);
+            setWorkState(status);
+            
         }catch (error){
             setMessage(error.message);
         }
     }
 
-    let workButton;
-    let breakButton;
-    let workButtonInfo = "Start your workday";
-    let breakButtonInfo = "You cant start your break without starting workday.";
+    const handleEndWorkday = async () =>{
+        try{
+            if(workState === "onBreak"){
+                await endBreak(emplID);
+            }
+
+            const result = await endWorkday(emplID);
+            setMessage(result);
+
+            const workStatus = await statusWorkday(emplID);
+            const breakStatus = await statusBreak(emplID);
+
+            let status;
+            if(workStatus === "notStarted" || workStatus === null){
+                status = "notStarted";
+            } else if(workStatus === "ended"){
+                status = "ended";
+            } else if(breakStatus === "onBreak"){
+                status = "onBreak";
+            } else {
+                status = "working";
+            }
+
+            setWorkState(status);
+        }catch(error){
+            setMessage(error.message);
+        }
+    }
+
+    let workButton, breakButton, workButtonInfo, breakButtonInfo;
+
+    if(workState === null){
+        workButtonInfo = "Waiting for database...";
+        breakButtonInfo = "Waiting for database...";
+        workButton = <Button label="Start Workday" disabled={true}/>
+        breakButton= <Button label="Start Break" disabled={true}/>
+    }
 
     if(workState==="notStarted"){
         workButton = <Button label="Start Workday" onClick={() => handleAction(startWorkday, "working")}/>
-        workButtonInfo="Workday started. You can take break or end your workday.";
+        workButtonInfo="Click to start your workday.";
+    }else if(workState === "working" || workState === "onBreak"){
+        workButton = <Button label="End Workday" onClick={() => handleEndWorkday()}/>
+        workButtonInfo="Click to end your workday.";
     }else{
-        workButton = <Button label="End Workday" onClick={() => handleAction(endWorkday,"workdayEnded")}/>
-    }   workButtonInfo="Workday ended.";
+        workButton = <Button label="End Workday" disabled={true}/>
+        workButtonInfo="Workday ended.";
+    }   
 
     if(workState==="working"){
-        breakButton = <Button label="Start Break" onClick={()=> handleAction(startBreak, "onBreak")}/>
-        breakButtonInfo="Break started. You can stop it anytime";
-    }else if(workState==="onBreak"){
-        breakButton = <Button label="End Break" onClick={()=> handleAction(endBreak, "working")}/>
-        breakButtonInfo="Break ended. You can start a new one.";
-    }else if(workState==="notStarted"){
-        breakButton = <Button label="Start Break" onClick={()=> handleAction(startBreak, "onBreak")}/>
-        breakButtonInfo="You cant start your break without starting workday.";
-    }else{
-        breakButton = <Button label="Start Break" onClick={()=> handleAction(startBreak, "onBreak")}/>
+        breakButton = <Button label="Start Break" onClick={()=> handleAction(startBreak)}/>
         breakButtonInfo="You can start your break.";
+    }else if(workState==="onBreak"){
+        breakButton = <Button label="End Break" onClick={()=> handleAction(endBreak)}/>
+        breakButtonInfo="Currenly on break. Click to end your break.";
+    }else if(workState==="notStarted"){
+        breakButton = <Button label="Start Break" disabled={true}/>
+        breakButtonInfo="You need to start your workday first.";
+    }else{
+        breakButton = <Button label="Start Break" disabled={true}/>
+        breakButtonInfo="Workday ended, you can't start your break.";
     }
 
     return(
