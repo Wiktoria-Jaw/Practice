@@ -1,0 +1,97 @@
+@PraktykiAPI_HostAddress = https://localhost:7164
+
+GET {{PraktykiAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/employees
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/employees/dayoff/{date}
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/employees/dayoff/2026-03-03
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/employees/dayoff/2026-03-03
+
+###
+
+@status=Pending
+GET {{PraktykiAPI_HostAddress}}/api/employees/admin/dayoff/2026-03-03/{{status}}
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/employees/admin/dayoff/2026-03-03/Pending
+
+###
+
+@id=0
+GET {{PraktykiAPI_HostAddress}}/api/workdays/workday/{date_start}/{date_end}/{{id}}
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/workdays/workday/2026-03-04/3
+
+###
+
+@emplID=0
+POST {{PraktykiAPI_HostAddress}}/api/workdays/emplPanel/workday/start/2
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/employees/employee/2
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/2
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/employees/employee/{{id}}
+
+###
+
+PUT {{PraktykiAPI_HostAddress}}/api/breaks/emplPanel/workday/break/end/{{emplID}}
+
+###
+
+PUT {{PraktykiAPI_HostAddress}}/api/workdays/emplPanel/workday/end/{{emplID}}
+
+###
+
+POST {{PraktykiAPI_HostAddress}}/api/workdays/emplPanel/workday/start/3
+
+###
+
+POST {{PraktykiAPI_HostAddress}}/api/breaks/emplPanel/workday/break/start/{{emplID}}
+
+###
+
+PUT {{PraktykiAPI_HostAddress}}/api/workdays/emplPanel/workday/end/{{emplID}}
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/employees/employee/3
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/workdays/emplPanel/workday/status/4
+
+###
+
+PUT {{PraktykiAPI_HostAddress}}/api/breaks/emplPanel/workday/break/end/{{emplID}}
+
+###
+
+POST {{PraktykiAPI_HostAddress}}/api/breaks/emplPanel/workday/break/start/4
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/breaks/emplPanel/workday/break/status/4
+
+###
