@@ -2,6 +2,7 @@ import Button from "./Button.jsx"
 import { startWorkday, endWorkday, statusWorkday } from "../api/WorkDayAPI"
 import { useState, useEffect} from "react"
 import { endBreak, startBreak, statusBreak } from "../api/BreakAPI.js"
+import "../styles/MainContent.css"
 
 export default function MainContent(props){
     const emplID = props.emplID;

@@ -95,3 +95,7 @@ POST {{PraktykiAPI_HostAddress}}/api/breaks/emplPanel/workday/break/start/4
 GET {{PraktykiAPI_HostAddress}}/api/breaks/emplPanel/workday/break/status/4
 
 ###
+
+GET {{PraktykiAPI_HostAddress}}/api/day_off/dayoff
+
+###

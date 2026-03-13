@@ -1,7 +1,9 @@
 import Header from "./components/Header.jsx"
 import MainContent from "./components/MainContent.jsx"
+import Calendar from "./pages/Calendar.jsx"
 import { getEmployeeData } from "./api/EmployeeAPI.js"
 import { useState, useEffect } from "react"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 export default function App(){
   const [employee, setEmployee] = useState({Name: "", Surname: ""});
@@ -21,9 +23,13 @@ export default function App(){
   
 
     return (
-      <>
-        <Header Name={employee.Name} Surname={employee.Surname}/>
-        <MainContent emplID={employeeId}/>
-      </>
+        <BrowserRouter>
+          <Header Name={employee.Name} Surname={employee.Surname}/>
+          <Routes>
+             <Route path="/" element={<MainContent/>}/>
+             <Route path="/calendar" element={<Calendar year={Date.now.year} month={Date.now.month}/>}/>
+             {/* <Route path="/log-out" element={" "}/> */}
+          </Routes>
+        </BrowserRouter>
     )
 }

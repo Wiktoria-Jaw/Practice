@@ -20,47 +20,13 @@ namespace PraktykiAPI.Controllers
             _context = context;
         }
 
-        ////zwraca wszystkie dni wolne
-        //[HttpGet("admin/dayoff")]
-        //public async Task<IActionResult> AdminGetDays_Off()
-        //{
-        //    var daysoff = _context.Days_Off.ToListAsync();
-
-        //    return Ok(daysoff);
-        //}
-
-        //[HttpGet("admin/dayoff/{status}")]
-        //public async Task<IActionResult> AdminGetDays_OffStat(string status)
-        //{
-        //    var daysoff = _context.Days_Off.Where(d => d.Status == status).ToListAsync();
-
-        //    return Ok(daysoff);
-        //}
-
-        //[HttpGet("dayoff")]
-        //public async Task<IActionResult> GetDays_Off()
-        //{
-        //    var daysoff = _context.Days_Off.Where(d=> d.Status == "Accepted").ToListAsync();
-
-        //    return Ok(daysoff);
-        //}
-
-        //[HttpPut("admin/dayoff/{id}/{status}")]
-        //public async Task<IActionResult> ChangeValueDays_Off(int id, string status)
-        //{
-        //    var daysoff = await _context.Days_Off.FindAsync(id);
-
-        //    if (daysoff == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    daysoff.Status = status;
-
-        //    return Ok(daysoff);
-        //}
-
-        //1. zwrocic dni wolnego w ciagu dnia/tygodnia/miesiaca dla tego id pracownika
+        //zwraca wszsytkie dni wolne, narazie bez sortowania na zatwierdzone i niezatwierdzone
+        [HttpGet("daysoff")]
+        public async Task<IActionResult> GetDaysOff()
+        {
+            var daysoff = await _context.Days_Off.Join(_context.Employees,  d=> d.Employee_ID, e => e.ID, (d,e) => new { d.Start_Date, d.End_Date, e.Name, e.Surname }).ToListAsync();
+            return Ok(daysoff);
+        }
 
         private bool Day_OffExists(int id)
         {
