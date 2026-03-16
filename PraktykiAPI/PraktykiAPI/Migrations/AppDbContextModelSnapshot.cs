@@ -29,7 +29,7 @@ namespace PraktykiAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<DateTime>("BreakEnd")
+                    b.Property<DateTime?>("BreakEnd")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("BreakStart")
@@ -94,7 +94,6 @@ namespace PraktykiAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
@@ -117,7 +116,7 @@ namespace PraktykiAPI.Migrations
                     b.Property<int>("EmployeeID")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("WorkEnd")
+                    b.Property<DateTime?>("WorkEnd")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("WorkStart")

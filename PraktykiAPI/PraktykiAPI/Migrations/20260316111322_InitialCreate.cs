@@ -18,7 +18,7 @@ namespace PraktykiAPI.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -57,7 +57,7 @@ namespace PraktykiAPI.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     WorkStart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    WorkEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    WorkEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EmployeeID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -78,7 +78,7 @@ namespace PraktykiAPI.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BreakStart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BreakEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BreakEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
                     WorkDayID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

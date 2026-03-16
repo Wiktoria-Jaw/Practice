@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace PraktykiAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260316095518_InitialCreate")]
+    [Migration("20260316111322_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -32,7 +32,7 @@ namespace PraktykiAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<DateTime>("BreakEnd")
+                    b.Property<DateTime?>("BreakEnd")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("BreakStart")
@@ -97,7 +97,6 @@ namespace PraktykiAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
@@ -120,7 +119,7 @@ namespace PraktykiAPI.Migrations
                     b.Property<int>("EmployeeID")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("WorkEnd")
+                    b.Property<DateTime?>("WorkEnd")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("WorkStart")
