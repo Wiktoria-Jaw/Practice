@@ -10,7 +10,7 @@ namespace PraktykiAPI.Models
         public int ID { get; set; }
         [Required]
         public DateTime BreakStart { get; set; }
-        public DateTime BreakEnd { get; set; }
+        public DateTime? BreakEnd { get; set; }
         [Required]
         public int WorkDayID { get; set; }
 

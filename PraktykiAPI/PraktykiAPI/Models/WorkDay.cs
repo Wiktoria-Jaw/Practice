@@ -10,7 +10,7 @@ namespace PraktykiAPI.Models
         public int ID { get; set; }
         [Required]
         public DateTime WorkStart { get; set; }
-        public DateTime WorkEnd { get; set; }
+        public DateTime? WorkEnd { get; set; }
         [Required]
         public int EmployeeID { get; set; }
         
