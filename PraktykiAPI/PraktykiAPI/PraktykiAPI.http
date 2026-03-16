@@ -33,3 +33,23 @@ POST {{PraktykiAPI_HostAddress}}/api/breaks/emplPanel/workday/break/start/{{empl
 PUT {{PraktykiAPI_HostAddress}}/api/breaks/emplPanel/workday/break/end/{{emplID}}
 
 ###
+
+GET {{PraktykiAPI_HostAddress}}/api/breaks/emplPanel/workday/break/status/1
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/breaks/emplPanel/workday/break/status/1
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/breaks/emplPanel/workday/break/status/{{emplID}}
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/workdays/emplPanel/workday/status/{{emplID}}
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/breaks/emplPanel/workday/break/status/{{emplID}}
+
+###

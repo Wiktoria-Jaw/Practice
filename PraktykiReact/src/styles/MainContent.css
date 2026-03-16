@@ -13,9 +13,3 @@ main{
   width: 400px;
   align-items: center;
 }
-
-.infoSpan{
-  align-self: center;
-  margin: 10px 20px;
-  text-align: center;
-}

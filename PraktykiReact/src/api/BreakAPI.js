@@ -29,8 +29,9 @@ export const statusBreak = async (emplID)=>{
         method: "GET"
     });
     if(!response.ok){
-        const error = await response.text();
-        alert(error);
+        throw new Error("Error fetching break status");
     }
-    return response.text();
+    const data = await response.json();
+    console.log("Api break:", data);
+    return data;
 }

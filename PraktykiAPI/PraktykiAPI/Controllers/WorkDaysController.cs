@@ -24,7 +24,7 @@ namespace PraktykiAPI.Controllers
         [HttpPost("emplPanel/workday/start/{emplID}")]
         public async Task<IActionResult> StartWorkday(int emplID)
         {
-            bool alreadyStarted = await _context.WorkSchedule.AnyAsync(w => w.EmployeeID == emplID && w.WorkStart == DateTime.Now);
+            bool alreadyStarted = await _context.WorkSchedule.AnyAsync(w => w.EmployeeID == emplID && w.WorkStart == DateTime.Now.Date);
 
             if (alreadyStarted)
             {
@@ -44,9 +44,9 @@ namespace PraktykiAPI.Controllers
         }
 
         [HttpPut("emplPanel/workday/end/{emplID}")]
-        public async Task<IActionResult> EndtWorkday(int emplID)
+        public async Task<IActionResult> EndWorkday(int emplID)
         {
-            var workday = await _context.WorkSchedule.FirstOrDefaultAsync(w => w.EmployeeID == emplID && w.WorkStart == DateTime.Now);
+            var workday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID && w.WorkEnd == null).OrderByDescending(w => w.WorkStart).FirstOrDefaultAsync();
 
             if (workday == null)
             {
@@ -68,19 +68,14 @@ namespace PraktykiAPI.Controllers
         [HttpGet("emplPanel/workday/status/{emplID}")]
         public async Task<IActionResult> getWorkdayStatus(int emplID)
         {
-            var workday = await _context.WorkSchedule.FirstOrDefaultAsync(w => w.EmployeeID == emplID && w.WorkStart == DateTime.Now);
+            var workday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID && w.WorkEnd == null).OrderByDescending(w => w.WorkStart).FirstOrDefaultAsync();
 
             if (workday == null)
             {
-                return Ok("notStarted");
+                return Ok( new { status = "notStarted", startTime = (DateTime?)null, endTime = (DateTime?)null });
             }
 
-            if (workday.WorkEnd == null)
-            {
-                return Ok("working");
-            }
-
-            return Ok("ended");
+            return Ok(new { status = "working", startTime = workday.WorkStart, endTime = workday.WorkEnd });
         }
         private bool WorkDayExists(int id)
         {

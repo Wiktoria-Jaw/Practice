@@ -74,23 +74,23 @@ namespace PraktykiAPI.Controllers
         }
 
         [HttpGet("emplPanel/workday/break/status/{emplID}")]
-        public async Task<IActionResult> getWorkdayStatus(int emplID)
+        public async Task<IActionResult> getBreakStatus(int emplID)
         {
-            var workday = await _context.WorkSchedule.FirstOrDefaultAsync(w => w.WorkStart == DateTime.Now && w.EmployeeID == emplID && w.WorkEnd == null);
+            var workday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID && w.WorkEnd == null).OrderByDescending(w => w.WorkStart).FirstOrDefaultAsync();
 
             if (workday == null)
             {
-                return Ok("noBreakStarted");
+                return Ok(new { status = "noBreakStarted", startTime = (DateTime?)null, endTime = (DateTime?)null });
             }
 
-            var breakCur = await _context.Breaks.FirstOrDefaultAsync(b => b.WorkDayID == workday.ID && b.BreakEnd == null);
+            var breakCur = await _context.Breaks.Where(b => b.WorkDayID == workday.ID && b.BreakEnd == null).OrderByDescending(b => b.BreakStart).FirstOrDefaultAsync();
 
             if (breakCur == null)
             {
-                return Ok("noBreakStarted");
+                return Ok(new {status = "noBreakStarted", startTime = (DateTime?)null, endTime = (DateTime?)null });
             }
 
-            return Ok("onBreak");
+            return Ok(new { status = "onBreak", startTime = breakCur.BreakStart, endTime = breakCur.BreakEnd });
         }
 
         private bool BreakExists(int id)

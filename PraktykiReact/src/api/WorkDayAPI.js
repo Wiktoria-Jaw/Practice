@@ -29,9 +29,10 @@ export const statusWorkday = async (emplID) => {
     const response = await fetch(`${API_URL}/emplPanel/workday/status/${emplID}`,{
         method: "GET"
     });
-
     if(!response.ok){
-        alert("Failed to fetch work status");
+        throw new Error("Error fetching workday status");
     }
-    return response.text();
+    const data = await response.json();
+    console.log("Api workday:", data);
+    return data;
 }

@@ -11,7 +11,7 @@ button{
   margin: 20px;
 }
 
-button:hover{
+button:hover:not(disabled){
   background-color: #bdbe57;
   color: #1b1c1d;
 }

@@ -1,10 +1,12 @@
-﻿namespace PraktykiAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace PraktykiAPI.Models;
 
 public class DbInitializer
 {
-    public static void Initialize(AppDbContext context)
+    public static async Task InitializeAsync(AppDbContext context)
     {
-        if (context.Employees.Any())
+        if (await context.Employees.AnyAsync())
         {
             return;
         }
@@ -18,6 +20,6 @@ public class DbInitializer
         };
 
         context.Employees.Add(employee);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
     }
 }
