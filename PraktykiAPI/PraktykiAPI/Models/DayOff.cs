@@ -3,20 +3,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PraktykiAPI.Models
 {
-    //[Table("Days_Off")]
-    public class Day_Off
+    [Table("DaysOff")]
+    public class DayOff
     {
         [Key]
         public int ID { get; set; }
         [Required]
-        public DateOnly Start_Date { get; set; }
+        public DateOnly StartDate { get; set; }
         [Required]
-        public DateOnly End_Date { get; set; }
-        public string Status { get; set; }
+        public DateOnly EndDate { get; set; }
         [Required]
-        public int Employee_ID { get; set; }
+        public string AcceptStatus { get; set; } = "pending";
+        [Required]
+        public int EmployeeID { get; set; }
 
-        [ForeignKey("Employee_ID")]
+        [ForeignKey("EmployeeID")]
         public Employee Employee { get; set; }
     }
 }

@@ -11,11 +11,10 @@
 
             var employee = new Employee()
             {
-                Name = "Test",
-                Surname = "Employee",
+                FirstName = "Test",
+                LastName = "Employee",
                 Email = "test@gmail.com",
-                Address = "Test Street",
-                Phone_Number = "1234567890",
+                PhoneNumber = "1234567890",
             };
 
             context.Employees.Add(employee);

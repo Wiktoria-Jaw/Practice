@@ -21,74 +21,74 @@ namespace PraktykiAPI.Controllers
             _context = context;
         }
 
-        [HttpPost("emplPanel/workday/start/{emplID}")]
-        public async Task<IActionResult> StartWorkday(int emplID)
-        {
-            DateOnly now = DateOnly.FromDateTime(DateTime.Now);
-            bool alreadyStarted = await _context.Work_Timetable.AnyAsync(w=>w.Employee_Id == emplID && w.Date == now);
+        //[HttpPost("emplPanel/workday/start/{emplID}")]
+        //public async Task<IActionResult> StartWorkday(int emplID)
+        //{
+        //    DateOnly now = DateOnly.FromDateTime(DateTime.Now);
+        //    bool alreadyStarted = await _context.Work_Timetable.AnyAsync(w=>w.Employee_Id == emplID && w.Date == now);
 
-            if (alreadyStarted)
-            {
-                return BadRequest("Workday already started.");
-            }
+        //    if (alreadyStarted)
+        //    {
+        //        return BadRequest("Workday already started.");
+        //    }
 
-            WorkDay newWorkDay = new WorkDay()
-            {
-                Date = now,
-                Employee_Id = emplID,
-                Work_Start_Hour = TimeOnly.FromDateTime(DateTime.Now),
-            };
+        //    WorkDay newWorkDay = new WorkDay()
+        //    {
+        //        Date = now,
+        //        Employee_Id = emplID,
+        //        Work_Start_Hour = TimeOnly.FromDateTime(DateTime.Now),
+        //    };
             
-            _context.Work_Timetable.Add(newWorkDay);
-            await _context.SaveChangesAsync();
+        //    _context.Work_Timetable.Add(newWorkDay);
+        //    await _context.SaveChangesAsync();
 
-            return Ok("Workday started.");
-        }
+        //    return Ok("Workday started.");
+        //}
 
-        [HttpPut("emplPanel/workday/end/{emplID}")]
-        public async Task<IActionResult> EndtWorkday(int emplID)
-        {
-            DateOnly now = DateOnly.FromDateTime(DateTime.Now);
-            var workday = await _context.Work_Timetable.FirstOrDefaultAsync(w => w.Employee_Id == emplID && w.Date == now);
+        //[HttpPut("emplPanel/workday/end/{emplID}")]
+        //public async Task<IActionResult> EndtWorkday(int emplID)
+        //{
+        //    DateOnly now = DateOnly.FromDateTime(DateTime.Now);
+        //    var workday = await _context.Work_Timetable.FirstOrDefaultAsync(w => w.Employee_Id == emplID && w.Date == now);
 
-            if (workday == null)
-            {
-                return BadRequest("Workday wasn't started.");
-            }
+        //    if (workday == null)
+        //    {
+        //        return BadRequest("Workday wasn't started.");
+        //    }
 
-            if(workday.Work_End_Hour != null)
-            {
-                return BadRequest("Workday already ended.");
-            }
+        //    if(workday.Work_End_Hour != null)
+        //    {
+        //        return BadRequest("Workday already ended.");
+        //    }
 
-            workday.Work_End_Hour = TimeOnly.FromDateTime(DateTime.Now);
+        //    workday.Work_End_Hour = TimeOnly.FromDateTime(DateTime.Now);
 
-            await _context.SaveChangesAsync();
+        //    await _context.SaveChangesAsync();
 
-            return Ok("Workday ended.");
-        }
+        //    return Ok("Workday ended.");
+        //}
 
-        [HttpGet("emplPanel/workday/status/{emplID}")]
-        public async Task<IActionResult> getWorkdayStatus(int emplID)
-        {
-            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
-            var workday = await _context.Work_Timetable.FirstOrDefaultAsync(w => w.Employee_Id == emplID && w.Date == today);
+        //[HttpGet("emplPanel/workday/status/{emplID}")]
+        //public async Task<IActionResult> getWorkdayStatus(int emplID)
+        //{
+        //    DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+        //    var workday = await _context.Work_Timetable.FirstOrDefaultAsync(w => w.Employee_Id == emplID && w.Date == today);
 
-            if (workday == null)
-            {
-                return Ok("notStarted");
-            }
+        //    if (workday == null)
+        //    {
+        //        return Ok("notStarted");
+        //    }
 
-            if (workday.Work_End_Hour == null)
-            {
-                return Ok("working");
-            }
+        //    if (workday.Work_End_Hour == null)
+        //    {
+        //        return Ok("working");
+        //    }
 
-            return Ok("ended");
-        }
-        private bool WorkDayExists(int id)
-        {
-            return _context.Work_Timetable.Any(e => e.ID == id);
-        }
+        //    return Ok("ended");
+        //}
+        //private bool WorkDayExists(int id)
+        //{
+        //    return _context.Work_Timetable.Any(e => e.ID == id);
+        //}
     }
 }

@@ -21,16 +21,16 @@ namespace PraktykiAPI.Controllers
         }
 
         //zwraca wszsytkie dni wolne, narazie bez sortowania na zatwierdzone i niezatwierdzone
-        [HttpGet("daysoff")]
-        public async Task<IActionResult> GetDaysOff()
-        {
-            var daysoff = await _context.Days_Off.Join(_context.Employees,  d=> d.Employee_ID, e => e.ID, (d,e) => new { d.Start_Date, d.End_Date, e.Name, e.Surname }).ToListAsync();
-            return Ok(daysoff);
-        }
+        //[HttpGet("daysoff")]
+        //public async Task<IActionResult> GetDaysOff()
+        //{
+        //    var daysoff = await _context.Days_Off.Join(_context.Employees,  d=> d.Employee_ID, e => e.ID, (d,e) => new { d.Start_Date, d.End_Date, e.Name, e.Surname }).ToListAsync();
+        //    return Ok(daysoff);
+        //}
 
-        private bool Day_OffExists(int id)
-        {
-            return _context.Days_Off.Any(e => e.ID == id);
-        }
+        //private bool Day_OffExists(int id)
+        //{
+        //    return _context.Days_Off.Any(e => e.ID == id);
+        //}
     }
 }
