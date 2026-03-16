@@ -20,3 +20,6 @@ FOR REACT:
 It works that way bc it's first version of this app. Later I will add login so `employeeId` will be given from login and there won't be a moment where code recive ID without employee.
 
 !!!!! ------------------------- !!!!!
+
+Info:
+1. Branch 'ver1.0' works on other database then 'ver2.0', you cant test each version on same database. Im too lazy to change and its only backend. Major changes: Most dates and time got merged with DataTime.
