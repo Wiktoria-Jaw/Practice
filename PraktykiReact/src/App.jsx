@@ -21,12 +21,13 @@ export default function App(){
     fetchData();
     }, []);
 
+    const today = new Date();
     return (
         <BrowserRouter>
           <Header FirstName={employee.FirstName} MiddleName={employee.MiddleName} LastName={employee.LastName}/>
           <Routes>
              <Route path="/" element={<MainContent emplID={employeeId}/>}/>
-             <Route path="/calendar" element={<Calendar year={Date.now.year} month={Date.now.month}/>}/>
+             <Route path="/calendar" element={<Calendar year={today.getFullYear()} month={today.getMonth() +1}/>}/>
              {/* <Route path="/log-out" element={" "}/> */}
           </Routes>
         </BrowserRouter>

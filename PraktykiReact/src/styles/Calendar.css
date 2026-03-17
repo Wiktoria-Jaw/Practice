@@ -1,5 +1,29 @@
-.calender-grid{
-    border: 1px black;
-    width: 500px;
-    height: 200px;
+main{
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin: 20px;
+  width: 100%;
+  align-self: center;
+}
+
+.day-header {
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 0;
+  
+}
+
+.calendar-header{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom:10px;
+    height: 30px;
+    width: 100%;
+    align-self: center;
 }
