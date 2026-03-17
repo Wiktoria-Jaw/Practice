@@ -1,9 +1,9 @@
 import "../styles/Button.css"
 
-export default function Button({label, onClick}){
+export default function Button(props){
     return(
         <>
-            <button className="ButtonState" onClick={onClick}>{label}</button>
+            <button onClick={props.onClick} disabled={props.disabled}>{props.label}</button>
         </>
     )
 }

@@ -13,46 +13,47 @@ export default function MainContent(props){
     const [breakTime, setBreakTime] = useState({start: null, end: null});
     const [message, setMessage] = useState("");
 
-    useEffect(() => {
-        const fetchStatus = async () => {
+    const fetchStatus = async () => {
             try{
                 const workStatus = await statusWorkday(emplID);
-                console.log("Work: ", workStatus);
                 const breakStatus = await statusBreak(emplID);
-                console.log("Break: ", breakStatus);
-
-                if(workStatus.status === "notStarted" || workStatus === null){
-                    setWorkState("notStarted");
-                    setWorkTime({start: null, end: null});
-                }else if(workStatus.status === "working"){
+                console.log("Work status: ",workStatus.status);
+                console.log("Break status: ", breakStatus.status);
+                if(workStatus.status === "working"){
                     setWorkState("working");
                     setWorkTime({start: workStatus.startTime, end: workStatus.endTime});
-                }else if(workStatus.status === "ended"){
-                    setWorkState("ended");
+                }else if(workStatus.status === "finished"){
+                    setWorkState("finished");
                     setWorkTime({start: workStatus.startTime, end: workStatus.endTime});
+                }else{
+                    setWorkState("notStarted");
+                    setWorkTime({start: null, end: null});
                 }
                 
-                if(breakStatus === null || breakStatus.stauts === "notStarted"){
+                if(breakStatus === null || breakStatus.status === "notStarted"){
                     setBreakState("notStarted");
                     setBreakTime({start: null, end:null});
-                }else if(breakStatus.statis == "onBreak"){
+                }else if(breakStatus.status == "onBreak"){
                     setBreakState("onBreak");
                     setBreakTime({start: breakStatus.startTime, end: breakStatus.endTime});
-                }else if(breakStatus.status === "ended"){
-                    etBreakState("ended");
+                }else if (breakStatus.status === "finished"){
+                    setBreakState("finished");
                     setBreakTime({start: breakStatus.startTime, end: breakStatus.endTime});
                 }
             }catch(error){
                 setMessage(error.message);
             }
         }
+
+    useEffect(() => {
         fetchStatus();
     }, [emplID]);
 
     const handleWorkAction = async (apiFunc) => {
         try{
-            await apiFunc(emplID);
+            var result = await apiFunc(emplID);
             await fetchStatus();
+            setMessage(result.message);
         }catch (error){
             setMessage(error.message);
         }
@@ -60,8 +61,9 @@ export default function MainContent(props){
 
     const handleBreakAction = async (apiFunc) => {
         try{
-            await apiFunc(emplID);
+            var result = await apiFunc(emplID);
             await fetchStatus();
+            setMessage(result.message);
         }catch (error){
             setMessage(error.message);
         }
@@ -70,7 +72,7 @@ export default function MainContent(props){
     let workButton, breakButton;
     if (workState === "notStarted") {
         workButton = <Button label="Start Workday" onClick={() => handleWorkAction(startWorkday)} />
-    } else if (workState === "working" || workState === "onBreak") {
+    } else if (workState === "working") {
         workButton = <Button label="End Workday" onClick={() => handleWorkAction(endWorkday)} />
     } else {
         workButton = <Button label="End Workday" disabled={true} />;
@@ -78,22 +80,27 @@ export default function MainContent(props){
 
     if (breakState === "notStarted" && workState === "working") {
         breakButton = <Button label="Start Break" onClick={() => handleBreakAction(startBreak)} />
-    } else if (breakState === "onBreak") {
+    } else if (breakState === "onBreak" && workState === "working") {
         breakButton = <Button label="End Break" onClick={() => handleBreakAction(endBreak)} />
+    } else if (breakState === "finished" && workState === "working" ) {
+        breakButton = <Button label="Start Break" onClick={() => handleBreakAction(startBreak)} />
     } else {
         breakButton = <Button label="Start Break" disabled={true} />;
     };
 
     return(
-        <main>
-            <div className="buttonNInfo">
-                {workButton}
-                <Timelaps mode="work" start={workTime.start} end={workTime.end}/>
-            </div>
-            <div className="buttonNInfo">
-                {breakButton}
-                <Timelaps mode="break" start={workTime.start} end={workTime.end}/>
-            </div>
-        </main>
+        <>
+            <main>
+                <div className="buttonNInfo">
+                    {workButton}
+                    <Timelaps mode="work" start={workTime.start} end={workTime.end}/>
+                </div>
+                <div className="buttonNInfo">
+                    {breakButton}
+                    <Timelaps mode="break" start={breakTime.start} end={breakTime.end}/>
+                </div>
+            </main>
+            <p className="errorParagraf">Information: {message}</p>
+        </>
     )
 }

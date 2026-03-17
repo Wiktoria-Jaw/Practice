@@ -24,11 +24,29 @@ namespace PraktykiAPI.Controllers
         [HttpPost("emplPanel/workday/start/{emplID}")]
         public async Task<IActionResult> StartWorkday(int emplID)
         {
-            bool alreadyStarted = await _context.WorkSchedule.AnyAsync(w => w.EmployeeID == emplID && w.WorkStart == DateTime.Now.Date);
+            var lastWorkday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID).OrderByDescending(w=>w.WorkStart).FirstOrDefaultAsync();
 
-            if (alreadyStarted)
+            if (lastWorkday != null && lastWorkday.WorkEnd == null)
             {
-                return BadRequest("Workday already started.");
+                var duration = DateTime.Now - lastWorkday.WorkStart;
+                if (duration.TotalHours > 16)
+                {
+                    lastWorkday.WorkEnd = DateTime.Now;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    return BadRequest(new { status = "error", message="Workday already started."});
+                }
+            }
+
+            if (lastWorkday != null && lastWorkday.WorkEnd != null)
+            {
+                var timeSinceEnd = DateTime.Now - lastWorkday.WorkEnd.Value;
+                if(timeSinceEnd.TotalHours < 8)
+                {
+                    return BadRequest(new { status = "error", message = "You must wait before starting a new workday." });
+                }
             }
 
             WorkDay newWorkDay = new WorkDay()
@@ -40,7 +58,7 @@ namespace PraktykiAPI.Controllers
             _context.WorkSchedule.Add(newWorkDay);
             await _context.SaveChangesAsync();
 
-            return Ok("Workday started.");
+            return Ok(new { status = "working", message = "Workday started." });
         }
 
         [HttpPut("emplPanel/workday/end/{emplID}")]
@@ -50,32 +68,34 @@ namespace PraktykiAPI.Controllers
 
             if (workday == null)
             {
-                return BadRequest("Workday wasn't started.");
+                return BadRequest(new { status = "error", message = "Workday wasn't started." });
             }
 
-            if (workday.WorkEnd != null)
+            var duration = DateTime.Now - workday.WorkStart;
+
+            if (duration.TotalMinutes < 10)
             {
-                return BadRequest("Workday already ended.");
+                return BadRequest(new { status = "error", message = "Workday too short." });
             }
 
             workday.WorkEnd = DateTime.Now;
 
             await _context.SaveChangesAsync();
 
-            return Ok("Workday ended.");
+            return Ok(new { status = "finished", startTime = workday.WorkStart, endTime = workday.WorkEnd, message = "Workday ended." });
         }
 
         [HttpGet("emplPanel/workday/status/{emplID}")]
         public async Task<IActionResult> getWorkdayStatus(int emplID)
         {
-            var workday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID && w.WorkEnd == null).OrderByDescending(w => w.WorkStart).FirstOrDefaultAsync();
+            var workday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID).OrderByDescending(w => w.WorkStart).FirstOrDefaultAsync();
 
             if (workday == null)
             {
                 return Ok( new { status = "notStarted", startTime = (DateTime?)null, endTime = (DateTime?)null });
             }
 
-            return Ok(new { status = "working", startTime = workday.WorkStart, endTime = workday.WorkEnd });
+            return Ok(new { status = workday.WorkEnd == null ? "working" : "finished", startTime = workday.WorkStart, endTime = workday.WorkEnd });
         }
         private bool WorkDayExists(int id)
         {

@@ -13,3 +13,9 @@ main{
   width: 400px;
   align-items: center;
 }
+
+.errorParagraf{
+  color: #dfe0e2;
+  font-size: 1.5rem;
+  justify-self: center;
+}

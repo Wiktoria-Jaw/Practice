@@ -53,3 +53,10 @@ GET {{PraktykiAPI_HostAddress}}/api/workdays/emplPanel/workday/status/{{emplID}}
 GET {{PraktykiAPI_HostAddress}}/api/breaks/emplPanel/workday/break/status/{{emplID}}
 
 ###
+
+POST {{PraktykiAPI_HostAddress}}/api/workdays/emplPanel/workday/start/1
+
+###
+
+PUT {{PraktykiAPI_HostAddress}}/api/workdays/emplPanel/workday/end/1
+###

@@ -5,11 +5,11 @@ export const startWorkday = async (emplID) => {
         method: "POST"
     });
     if(!response.ok){
-        const error = await response.text();
-        throw new Error(error);
+        const error = await response.json()
+        throw new Error(error.message);
     }
-    
-    return response.text();
+    const data = await response.json();
+    return data;
 }
 
 export const endWorkday = async (emplID) => {
@@ -18,11 +18,11 @@ export const endWorkday = async (emplID) => {
     });
 
     if(!response.ok){
-        const error = await response.text();
-        throw new Error(error);
+        const error = await response.json()
+        throw new Error(error.message);
     }
-
-    return response.text();
+    const data = await response.json();
+    return data;
 }
 
 export const statusWorkday = async (emplID) => {
@@ -30,9 +30,9 @@ export const statusWorkday = async (emplID) => {
         method: "GET"
     });
     if(!response.ok){
-        throw new Error("Error fetching workday status");
+        const error = await response.json()
+        throw new Error(error.message);
     }
     const data = await response.json();
-    console.log("Api workday:", data);
     return data;
 }

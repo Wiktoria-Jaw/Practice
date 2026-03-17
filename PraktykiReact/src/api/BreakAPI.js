@@ -6,10 +6,11 @@ export const startBreak = async (emplID) =>{
         method: "POST"
     });
     if(!response.ok){
-        const error = await response.text();
-        throw new Error(error);
+        const error = await response.json()
+        throw new Error(error.message);
     }
-    return response.text()
+    const data = await response.json();
+    return data;
 }
 
 export const endBreak = async (emplID)=>{
@@ -17,11 +18,11 @@ export const endBreak = async (emplID)=>{
         method: "PUT"
     });
     if(!response.ok){
-        const error = await response.text();
-        console.log(error);
-        throw new Error(error);
+        const error = await response.json()
+        throw new Error(error.message);
     }
-    return response.text();
+    const data = await response.json();
+    return data;
 }
 
 export const statusBreak = async (emplID)=>{
@@ -29,9 +30,9 @@ export const statusBreak = async (emplID)=>{
         method: "GET"
     });
     if(!response.ok){
-        throw new Error("Error fetching break status");
+        const error = await response.json()
+        throw new Error(error.message);
     }
     const data = await response.json();
-    console.log("Api break:", data);
     return data;
 }
