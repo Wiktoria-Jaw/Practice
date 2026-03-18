@@ -69,7 +69,7 @@ export default function Calendar(props){
 
     if(loading){
         return (
-            <div>Loading calender...</div>
+            <div className="loading">Loading calender...</div>
         )
     }
 

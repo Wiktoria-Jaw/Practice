@@ -38,9 +38,11 @@
   width: 60px;
 }
 
-.calendar-header > span{
+.calendar-header > span, 
+.loading{
   font-weight: bold;
   text-align: center;
   margin: 30px;
   font-size: 2rem;
+  color: #dfe0e2;
 }

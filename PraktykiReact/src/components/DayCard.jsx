@@ -1,10 +1,11 @@
 import "../styles/DayCard.css";
 
 export default function DayCard(props){
+    const hasDaysOff = props.employees.length > 0;
     return(
         <div className = "day-card" style={props.style}>
             <h1>{props.Num}</h1>
-            <span className="whoHasDaysOff">Days off:</span>
+            {hasDaysOff && <span className="whoHasDaysOff">Days off:</span>}
             <div className="employees">
                 {props.employees.map((empl, index) =>(
                 <div key={index} className="employeeNames">
