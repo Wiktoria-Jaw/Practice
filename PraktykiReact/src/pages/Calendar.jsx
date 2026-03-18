@@ -1,9 +1,12 @@
 import DayCard from "../components/DayCard";
+import Button from "../components/Button";
 import {useEffect, useState } from "react";
 import { getDaysOff } from "../api/DaysOffAPI";
 import "../styles/Calendar.css";
 
 export default function Calendar(props){
+    const [month, setMonth] = useState(props.month);
+    const [year, setYear] = useState(props.year);
     const [days, setDays] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -14,17 +17,22 @@ export default function Calendar(props){
                 const daysOffData = await getDaysOff();
                 console.log(daysOffData);
                 
-                const daysInMonth = new Date(props.year, props.month, 0).getDate();
+                const daysInMonth = new Date(year, month, 0).getDate();
                 const calenderDay = [];
 
                 for(let i = 1; i<= daysInMonth; i++){ 
-                    const currDate = new Date(props.year, props.month -1, i);
+                    const currDate = new Date(year, month -1, i);
                     
                     const employeesForDay = daysOffData.filter( d=> {
-                        const start = new Date(d.StartDate);
-                        const end = new Date(d.EndDate);
+                        const start = new Date(d.startDate);
+                        const end = new Date(d.endDate);
+                        
+                        start.setHours(0,0,0,0);
+                        end.setHours(0,0,0,0);
+                        currDate.setHours(0,0,0,0);
+
                         return currDate >= start && currDate <= end;
-                    }).map(d=> ({FirstName: d.FirstName, MiddleName: d.MiddleName, LastName: d.LastName}));
+                    }).map(d=> ({FirstName: d.firstName, MiddleName: d.middleName, LastName: d.lastName}));
 
                     console.log(i, currDate.toDateString(), employeesForDay);
 
@@ -39,7 +47,25 @@ export default function Calendar(props){
             }
         };
         fetchDaysOff();
-    }, [props.month, props.year]);
+    }, [month, year]);
+
+    const nextMonth = () => {
+        if(month === 12){
+            setMonth(1);
+            setYear(year+1);
+        }else{
+            setMonth(month + 1)
+        }
+    };
+
+    const previousMonth = () => {
+        if(month === 1){
+            setMonth(12);
+            setYear(year-1);
+        }else{
+            setMonth(month - 1)
+        }
+    }
 
     if(loading){
         return (
@@ -47,14 +73,21 @@ export default function Calendar(props){
         )
     }
 
-    let firstDayOfMonth = new Date(props.year, props.month -1,1).getDay();
+    let firstDayOfMonth = new Date(year, month -1,1).getDay();
     firstDayOfMonth = firstDayOfMonth === 0 ? 7 : firstDayOfMonth;
 
     const weekDays = ["Mon", "Tue", "Wed", "Thr", "Fri", "Sat", "Sun"];
+    const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const monthName = months[month-1];
 
     return(
-        <main>
+        <main className="calendar">
             <div className="calendar-header">
+                <Button label="<-" onClick={() => previousMonth()}/>
+                <span>{monthName} {year}</span>
+                <Button label="->" onClick={() => nextMonth()}/>
+            </div>
+            <div className="calendar-dayheader">
                 {weekDays.map((d, idx) => (
                     <div key={idx} className = "day-header">{d}</div>
                 ))}
