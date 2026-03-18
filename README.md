@@ -23,3 +23,10 @@ It works that way bc it's first version of this app. Later I will add login so `
 
 Info:
 1. Branch 'ver1.0' works on other database then 'ver2.0', you cant test each version on same database. Im too lazy to change and its only backend. Major changes: Most dates and time got merged with DataTime.
+
+2. Rules regarding "Workday" and "Break"
+    - You can't end workday that has less then 10 minutes.
+    - Break between starting workdays is 8 hours.
+    - If you forget to end workday, it will automaticly end after 16 hours.
+    - You cant start break when workday length is shorter then 10 minutes.
+    - Break have to be at least 5 minutes.
