@@ -33,3 +33,8 @@
 .employeeNames{
     font-size: 0.85rem;
 }
+
+.day-card.selected{
+    background-color: #bdbe57;
+    color: #1b1c1d;
+}

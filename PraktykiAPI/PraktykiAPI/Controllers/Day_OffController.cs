@@ -20,13 +20,54 @@ namespace PraktykiAPI.Controllers
             _context = context;
         }
 
-        //zwraca wszsytkie dni wolne, narazie bez sortowania na zatwierdzone i niezatwierdzone
-        [HttpGet("daysoff")]
-        public async Task<IActionResult> GetDaysOff()
+        [HttpGet("emplPanel/daysoff/accepted")]
+        public async Task<IActionResult> GetAcceptedDaysOff()
         {
-            var daysoff = await _context.DaysOff.Join(_context.Employees, d => d.EmployeeID, e => e.ID, (d, e) => new { d.StartDate, d.EndDate, e.FirstName, e.MiddleName, e.LastName }).ToListAsync();
+            var daysoff = await _context.DaysOff.Where( d => d.AcceptStatus == "accepted").Select( d => new {d.StartDate, d.EndDate, d.Employee.FirstName, d.Employee.MiddleName, d.Employee.LastName}).ToListAsync();
+
             return Ok(daysoff);
         }
+
+        [HttpPost("emplPanel/daysoff/declareDaysOff/{emplID}")]
+        public async Task<IActionResult> DeclareDayOff(int emplID, [FromBody] DayOffRequest request)
+        {
+            if(request.StartDate > request.EndDate)
+            {
+                return Ok(new { message = "StartDate cannot be after EndDate." });
+            }
+
+            bool overlaps = await _context.DaysOff.AnyAsync(d => d.EmployeeID == emplID && (request.StartDate >= d.StartDate && request.StartDate <= d.EndDate) || (request.EndDate >= d.StartDate && request.EndDate <= d.EndDate) || (request.StartDate <= d.StartDate && request.EndDate >= d.EndDate));
+
+            if (overlaps)
+            {
+                return Ok(new { message = "The employee already has day off in this period."});
+            }
+
+            var newDayOff = new DayOff
+            {
+                EmployeeID = emplID,
+                StartDate = request.StartDate,
+                EndDate = request.EndDate,
+            };
+
+            _context.DaysOff.Add(newDayOff);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message="Day off declared sucesfully."});
+        }
+
+        public class DayOffRequest
+        {
+            public DateOnly StartDate { get; set; }
+            public DateOnly EndDate { get; set; }
+        }
+
+        //[HttpGet("adminPanel/daysoff")]
+        //public async Task<IActionResult> GetAllDaysOff()
+        //{
+        //    var daysoff = await _context.DaysOff.Select(d => new { d.StartDate, d.EndDate, d.Employee.FirstName, d.Employee.MiddleName, d.Employee.LastName }).ToListAsync();
+        //    return Ok(daysoff);
+        //}
 
         private bool Day_OffExists(int id)
         {

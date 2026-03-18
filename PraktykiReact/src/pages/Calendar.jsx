@@ -1,7 +1,7 @@
 import DayCard from "../components/DayCard";
 import Button from "../components/Button";
 import {useEffect, useState } from "react";
-import { getDaysOff } from "../api/DaysOffAPI";
+import { getAcceptedDaysOff, declareDayOff } from "../api/DaysOffAPI";
 import "../styles/Calendar.css";
 
 export default function Calendar(props){
@@ -9,14 +9,14 @@ export default function Calendar(props){
     const [year, setYear] = useState(props.year);
     const [days, setDays] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [declarationMode, setDeclarationMode] = useState(false);
+    const [selectedDays, setSelectedDays] = useState([]);
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         const fetchDaysOff = async() => {
             try{
-                console.log("test pobierania dni wolnych");
-                const daysOffData = await getDaysOff();
-                console.log(daysOffData);
-                
+                const daysOffData = await getAcceptedDaysOff();
                 const daysInMonth = new Date(year, month, 0).getDate();
                 const calenderDay = [];
 
@@ -34,8 +34,6 @@ export default function Calendar(props){
                         return currDate >= start && currDate <= end;
                     }).map(d=> ({FirstName: d.firstName, MiddleName: d.middleName, LastName: d.lastName}));
 
-                    console.log(i, currDate.toDateString(), employeesForDay);
-
                     calenderDay.push({ day: i, employees: employeesForDay });
                 }
                 setDays(calenderDay);
@@ -43,6 +41,7 @@ export default function Calendar(props){
             }
             catch(error){
                 console.error(error);
+                setMessage(String(error));
                 setLoading(false);
             }
         };
@@ -67,6 +66,37 @@ export default function Calendar(props){
         }
     }
 
+    const handleDayClick = (day) => {
+        if(!declarationMode){
+            return;
+        };
+        if(selectedDays.includes(day)){
+            setSelectedDays(selectedDays.filter((d) => d !== day));
+        }else{
+            setSelectedDays([...selectedDays, day]);
+        }
+    };
+
+    const declareSelectedDays = async () => {
+        if(selectedDays.length === 0){
+            return;
+        }
+
+        const sortedDays = [...selectedDays].sort((a,b)=>a-b);
+        const startDate = new Date(year, month-1,sortedDays[0]);
+        const endDate = new Date(year, month-1, sortedDays[sortedDays.length-1]);
+
+        try {
+            var result = await declareDayOff(props.emplID, startDate.toISOString().split("T")[0], endDate.toISOString().split("T")[0]);
+            setMessage(result.message);
+        }catch(error){
+            console.error(error);
+            setMessage(result.message);
+        }
+        setSelectedDays([]);
+        setDeclarationMode(false);
+    }
+
     if(loading){
         return (
             <div className="loading">Loading calender...</div>
@@ -79,6 +109,7 @@ export default function Calendar(props){
     const weekDays = ["Mon", "Tue", "Wed", "Thr", "Fri", "Sat", "Sun"];
     const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     const monthName = months[month-1];
+    const Info = message !== "";
 
     return(
         <main className="calendar">
@@ -101,10 +132,19 @@ export default function Calendar(props){
                             Num = {day.day}
                             employees = {day.employees}
                             style={style}
+                            isSelected = {selectedDays.includes(day.day)}
+                            onClick={()=>handleDayClick(day.day)}
                         />
                     );
                 })}
             </div>
+            <div className="action-buttons">
+                <Button label={declarationMode ? "Cancel Declaration" : "Declare Day Off"} onClick={() => {
+                    if(declarationMode) setSelectedDays([]);
+                    setDeclarationMode(!declarationMode)}}/>
+                {declarationMode && (<Button label={"Accept Declaration"} onClick={declareSelectedDays}/>)}
+            </div>
+            {Info && <span className="message">{message}</span>}
         </main>
     );
 }

@@ -27,7 +27,7 @@ export default function App(){
           <Header FirstName={employee.FirstName} MiddleName={employee.MiddleName} LastName={employee.LastName}/>
           <Routes>
              <Route path="/" element={<MainContent emplID={employeeId}/>}/>
-             <Route path="/calendar" element={<Calendar year={today.getFullYear()} month={today.getMonth() +1}/>}/>
+             <Route path="/calendar" element={<Calendar year={today.getFullYear()} month={today.getMonth() +1} emplID={employeeId}/>}/>
              {/* <Route path="/log-out" element={" "}/> */}
           </Routes>
         </BrowserRouter>
