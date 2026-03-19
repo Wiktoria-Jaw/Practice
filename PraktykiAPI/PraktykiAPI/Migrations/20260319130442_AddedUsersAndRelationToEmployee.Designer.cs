@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace PraktykiAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260319130442_AddedUsersAndRelationToEmployee")]
+    partial class AddedUsersAndRelationToEmployee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,6 +118,9 @@ namespace PraktykiAPI.Migrations
                     b.Property<int>("EmployeeID")
                         .HasColumnType("int");
 
+                    b.Property<int>("Employee_ID")
+                        .HasColumnType("int");
+
                     b.Property<int>("IsActive")
                         .HasColumnType("int");
 
@@ -135,7 +141,7 @@ namespace PraktykiAPI.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("EmployeeID")
+                    b.HasIndex("Employee_ID")
                         .IsUnique();
 
                     b.ToTable("Users");
@@ -219,7 +225,7 @@ namespace PraktykiAPI.Migrations
                 {
                     b.HasOne("PraktykiAPI.Models.Employee", "Employee")
                         .WithOne("User")
-                        .HasForeignKey("PraktykiAPI.Models.User", "EmployeeID")
+                        .HasForeignKey("PraktykiAPI.Models.User", "Employee_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace PraktykiAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260319123214_PhoneNumberNoLongerRequired")]
+    partial class PhoneNumberNoLongerRequired
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,43 +107,6 @@ namespace PraktykiAPI.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("PraktykiAPI.Models.User", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int>("EmployeeID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IsActive")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IsLogIn")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Permission")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("EmployeeID")
-                        .IsUnique();
-
-                    b.ToTable("Users");
-                });
-
             modelBuilder.Entity("PraktykiAPI.Models.WorkDay", b =>
                 {
                     b.Property<int>("ID")
@@ -215,17 +181,6 @@ namespace PraktykiAPI.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("PraktykiAPI.Models.User", b =>
-                {
-                    b.HasOne("PraktykiAPI.Models.Employee", "Employee")
-                        .WithOne("User")
-                        .HasForeignKey("PraktykiAPI.Models.User", "EmployeeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
             modelBuilder.Entity("PraktykiAPI.Models.WorkDay", b =>
                 {
                     b.HasOne("PraktykiAPI.Models.Employee", "Employee")
@@ -240,9 +195,6 @@ namespace PraktykiAPI.Migrations
             modelBuilder.Entity("PraktykiAPI.Models.Employee", b =>
                 {
                     b.Navigation("DaysOff");
-
-                    b.Navigation("User")
-                        .IsRequired();
 
                     b.Navigation("WorkDays");
                 });

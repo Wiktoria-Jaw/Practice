@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace PraktykiAPI.Models;
 
@@ -73,7 +74,44 @@ public class DbInitializer
             MinBreakLengthInMinutes = 2,
         };
 
-        context.WorkSettings.AddRange(settings);
+        context.WorkSettings.Add(settings);
+        await context.SaveChangesAsync();
+
+        var user = new User()
+        {
+            Login = "TEmployee",
+            Permission = "employee",
+            IsActive = 1,
+            IsLogIn = 0,
+            EmployeeID = employee.ID,
+        };
+
+        var hasher = new PasswordHasher<User>();
+        user.Password = hasher.HashPassword(user, "abcd");
+
+        var user2 = new User()
+        {
+            Login = "SBParable",
+            Permission = "employee",
+            IsActive = 1,
+            IsLogIn = 0,
+            EmployeeID = employee2.ID,
+        };
+
+        user2.Password = hasher.HashPassword(user2, "1234");
+
+        var user3 = new User()
+        {
+            Login = "TNarrator",
+            Permission = "admin",
+            IsActive = 1,
+            IsLogIn = 0,
+            EmployeeID = employee3.ID,
+        };
+
+        user3.Password = hasher.HashPassword(user3, "admin");
+
+        context.Users.AddRange(user, user2, user3);
         await context.SaveChangesAsync();
     }
 }
