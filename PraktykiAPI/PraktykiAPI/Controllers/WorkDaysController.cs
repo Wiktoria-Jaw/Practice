@@ -26,10 +26,14 @@ namespace PraktykiAPI.Controllers
         {
             var lastWorkday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID).OrderByDescending(w=>w.WorkStart).FirstOrDefaultAsync();
 
+            var settings = await _context.WorkSettings.FirstOrDefaultAsync();
+
+            TimeSpan autoEndWorkdayLength = TimeSpan.FromMinutes(settings?.AutoEndWorkdayLengthInMinutes ?? 960);
+
             if (lastWorkday != null && lastWorkday.WorkEnd == null)
             {
                 var duration = DateTime.Now - lastWorkday.WorkStart;
-                if (duration.TotalHours > 16)
+                if (duration > autoEndWorkdayLength)
                 {
                     lastWorkday.WorkEnd = DateTime.Now;
                     await _context.SaveChangesAsync();
@@ -40,10 +44,12 @@ namespace PraktykiAPI.Controllers
                 }
             }
 
+            TimeSpan breakBetweenWorkdaysLength = TimeSpan.FromMinutes(settings?.MinBreakBetweenWorkdaysInMinutes ?? 480);
+
             if (lastWorkday != null && lastWorkday.WorkEnd != null)
             {
                 var timeSinceEnd = DateTime.Now - lastWorkday.WorkEnd.Value;
-                if(timeSinceEnd.TotalHours < 8)
+                if(timeSinceEnd < breakBetweenWorkdaysLength)
                 {
                     return BadRequest(new { status = "error", message = "You must wait before starting a new workday." });
                 }
@@ -66,14 +72,17 @@ namespace PraktykiAPI.Controllers
         {
             var workday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID && w.WorkEnd == null).OrderByDescending(w => w.WorkStart).FirstOrDefaultAsync();
 
+            var settings = await _context.WorkSettings.FirstOrDefaultAsync();
+
             if (workday == null)
             {
                 return BadRequest(new { status = "error", message = "Workday wasn't started." });
             }
 
+            TimeSpan minWorkdayLength = TimeSpan.FromMinutes(settings?.MinWorkdayLengthInMinutes ?? 10);
             var duration = DateTime.Now - workday.WorkStart;
 
-            if (duration.TotalMinutes < 10)
+            if (duration < minWorkdayLength)
             {
                 return BadRequest(new { status = "error", message = "Workday too short." });
             }

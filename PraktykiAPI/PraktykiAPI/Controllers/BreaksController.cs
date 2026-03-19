@@ -25,6 +25,8 @@ namespace PraktykiAPI.Controllers
         {
             var workday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID && w.WorkEnd == null).OrderByDescending(w => w.WorkStart).FirstOrDefaultAsync();
 
+            var settings = await _context.WorkSettings.FirstOrDefaultAsync();
+
             if (workday == null)
             {
                 return BadRequest(new { status = "error", message = "Workday not started." });
@@ -32,7 +34,9 @@ namespace PraktykiAPI.Controllers
 
             var timeFromStartingWorkday = DateTime.Now - workday.WorkStart;
 
-            if (timeFromStartingWorkday.TotalMinutes < 10)
+            TimeSpan minWorkdayForBreakLength = TimeSpan.FromMinutes(settings?.MinWorkdayLengthForBreakInMinutes ?? 10);
+
+            if (timeFromStartingWorkday < minWorkdayForBreakLength)
             {
                 return BadRequest(new { status = "error", message = "Break is not allowed yet." });
             }
@@ -61,6 +65,8 @@ namespace PraktykiAPI.Controllers
         {
             var workday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID && w.WorkEnd == null).OrderByDescending(w => w.WorkStart).FirstOrDefaultAsync();
 
+            var settings = await _context.WorkSettings.FirstOrDefaultAsync();
+
             if (workday == null)
             {
                 return BadRequest(new { status = "error", message = "Workday not started." });
@@ -73,9 +79,11 @@ namespace PraktykiAPI.Controllers
                 return BadRequest(new { status = "error", message = "No active break" });
             }
 
+            TimeSpan minBreakLength = TimeSpan.FromMinutes(settings?.MinBreakLengthInMinutes ?? 5);
+
             var breakDuration = DateTime.Now - breakCur.BreakStart;
 
-            if (breakDuration.TotalMinutes < 5)
+            if (breakDuration < minBreakLength)
             {
                 return BadRequest(new { status = "error", message = "Break is too short." });
             }
