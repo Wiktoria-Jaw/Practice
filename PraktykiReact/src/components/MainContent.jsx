@@ -100,7 +100,7 @@ export default function MainContent(props){
                     <Timelaps mode="break" start={breakTime.start} end={breakTime.end}/>
                 </div>
             </main>
-            <p className="errorParagraf">Information: {message}</p>
+            {!!message && (<p className="errorParagraf">Information: {message}</p>)}
         </>
     )
 }

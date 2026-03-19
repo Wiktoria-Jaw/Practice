@@ -1,0 +1,15 @@
+.login-page{
+    text-align: center;
+    margin: 200px 30px;
+    color: #dfe0e2;
+}
+
+.login{
+    margin: 20px;
+    font-size: 3rem;
+    padding: 10px;
+    background-color: #bdbe57;
+    color: #1b1c1d;;
+    width: 38%;
+    margin: auto;
+}

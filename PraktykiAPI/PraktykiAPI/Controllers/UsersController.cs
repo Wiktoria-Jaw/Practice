@@ -11,6 +11,8 @@ using PraktykiAPI.Models;
 
 namespace PraktykiAPI.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class UsersController : Controller
     {
         private readonly AppDbContext _context;
@@ -25,7 +27,12 @@ namespace PraktykiAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Login == request.Login);
+            if(request == null || string.IsNullOrEmpty(request.Login) || string.IsNullOrEmpty(request.Password))
+            {
+                return BadRequest(new { message = "Login and password are required." });
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Login == request.Login);
             if (user == null)
             {
                 return BadRequest(new { message = "Incorrect login or password." });
@@ -42,12 +49,18 @@ namespace PraktykiAPI.Controllers
                 return BadRequest(new {message = "This user isn't an active user."});
             }
 
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.ID == user.EmployeeID);
+
+            if (employee == null)
+            {
+                return BadRequest(new { message = "Employee not found." });
+            }
+
             user.IsLogIn = 1;
             await _context.SaveChangesAsync();
 
-            return Ok(new { id=user.EmployeeID, permission=user.Permission, login=user.Login });
+            return Ok(new { id =user.EmployeeID, firstName = employee.FirstName, middleName = employee.MiddleName, lastName = employee.LastName, permission=user.Permission, login=user.Login});
         }
-
         public class LoginRequest
         {
             public string Login { get; set; }

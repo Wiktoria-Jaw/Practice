@@ -1,0 +1,35 @@
+const API_URL = "https://localhost:7164/api/users"
+
+export const loginUser = async ({login, password}) => {
+    const response = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({login, password})
+    });
+
+    let data = null;
+
+    try{
+        data = await response.json();
+    }catch{
+        throw new Error("Server returned invalid response");
+    }
+
+    if(!response.ok){
+        throw new Error(data?.message || "Login failed");
+    }
+
+    return data;
+}
+
+export const logoutUser = async (emplID) => {
+    const response = await fetch(`${API_URL}/logout/${emplID}`,{
+        method: "PUT"
+    });
+    if(!response.ok){
+        const error = await response.json();
+        throw new Error(error.message);
+    }
+    const data = await response.json();
+    return data;
+}

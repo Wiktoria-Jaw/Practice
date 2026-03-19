@@ -1,34 +1,31 @@
 import Header from "./components/Header.jsx"
 import MainContent from "./components/MainContent.jsx"
 import Calendar from "./pages/Calendar.jsx"
-import { getEmployeeData } from "./api/EmployeeAPI.js"
-import { useState, useEffect } from "react"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import LoginPage from "./pages/LoginPage.jsx"
+import AdminPanel from "./pages/AdminPanel.jsx"
+import { useState } from "react"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 
 export default function App(){
-  const [employee, setEmployee] = useState({FirstName: "", MiddleName: "", LastName: ""});
-  const employeeId = 7;
+  const [user, setUser] = useState(null);
+  const today = new Date();
 
-  useEffect(() => {
-    const fetchData = async()=>{
-      try {
-        const data = await getEmployeeData(employeeId);
-        setEmployee({FirstName: data.firstName, MiddleName: data.middleName, LastName: data.lastName});
-      }catch(error){
-        console.error(error);
-      }
-    };
-    fetchData();
-    }, []);
-
-    const today = new Date();
     return (
         <BrowserRouter>
-          <Header FirstName={employee.FirstName} MiddleName={employee.MiddleName} LastName={employee.LastName}/>
+        {user &&(<Header FirstName={user.firstName} MiddleName={user.middleName} LastName={user.lastName}/>)}
           <Routes>
-             <Route path="/" element={<MainContent emplID={employeeId}/>}/>
-             <Route path="/calendar" element={<Calendar year={today.getFullYear()} month={today.getMonth() +1} emplID={employeeId}/>}/>
-             {/* <Route path="/log-out" element={" "}/> */}
+            {!user ? (
+              <Route path="*" element={<LoginPage setUser={setUser}/>}/>
+            ) : (
+              <>
+                <Route path="/" element={<MainContent emplID={user.id}/>}/>
+                <Route path="/calendar" element={<Calendar year={today.getFullYear()} month={today.getMonth() +1} emplID={user.id}/>}/>
+                
+                {user.permission === "admin" && (<Route path="/admin" element={<AdminPanel />}/>)}
+
+                <Route path="*" element={<Navigate to="/"/>}/>
+              </>
+            )}
           </Routes>
         </BrowserRouter>
     )

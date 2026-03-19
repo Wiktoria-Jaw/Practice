@@ -5,6 +5,5 @@ export const getEmployeeData = async (emplID) => {
     if(!response.ok){
         throw new Error("Failed to fetch employee data.");
     }
-    
     return response.json();
 }

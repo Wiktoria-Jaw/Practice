@@ -1,0 +1,23 @@
+.log-form{
+    display: flex;
+    flex-direction: column;
+    margin: 40px 20px;
+    align-items: center;
+}
+
+input{
+    width: 40%;
+    margin: 20px;
+    height: 30px;
+    font-size: 1.2rem;
+}
+
+label{
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+/* h1{
+    font-weight: 500;
+    font-size: 1.5rem;
+} */

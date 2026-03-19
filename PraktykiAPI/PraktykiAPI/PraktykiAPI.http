@@ -60,3 +60,16 @@ POST {{PraktykiAPI_HostAddress}}/api/workdays/emplPanel/workday/start/1
 
 PUT {{PraktykiAPI_HostAddress}}/api/workdays/emplPanel/workday/end/1
 ###
+
+POST {{PraktykiAPI_HostAddress}}/login
+Content-Type: application/json
+
+{
+  //LoginRequest
+}
+
+###
+
+PUT {{PraktykiAPI_HostAddress}}/logout/{{emplID}}
+
+###
