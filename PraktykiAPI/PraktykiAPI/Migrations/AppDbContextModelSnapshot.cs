@@ -129,6 +129,34 @@ namespace PraktykiAPI.Migrations
                     b.ToTable("WorkSchedule");
                 });
 
+            modelBuilder.Entity("PraktykiAPI.Models.WorkSettings", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int?>("AutoEndWorkdayLengthInMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MinBreakBetweenWorkdaysInMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MinBreakLengthInMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MinWorkdayLengthForBreakInMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MinWorkdayLengthInMinutes")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("WorkSettings");
+                });
+
             modelBuilder.Entity("PraktykiAPI.Models.Break", b =>
                 {
                     b.HasOne("PraktykiAPI.Models.WorkDay", "WorkDay")

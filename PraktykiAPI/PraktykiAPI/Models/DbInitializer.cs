@@ -28,7 +28,15 @@ public class DbInitializer
             PhoneNumber = "987654321",
         };
 
-        context.Employees.AddRange(employee, employee2);
+        var employee3 = new Employee()
+        {
+            FirstName = "The",
+            LastName = "Narrator",
+            Email = "narrator@gmail.com",
+            PhoneNumber = "000000000",
+        };
+
+        context.Employees.AddRange(employee, employee2, employee3);
         await context.SaveChangesAsync();
 
         var dayOff = new DayOff()
@@ -54,6 +62,18 @@ public class DbInitializer
         };
 
         context.DaysOff.AddRange(dayOff, dayOff2, dayOff3);
+        await context.SaveChangesAsync();
+
+        var settings = new WorkSettings()
+        {
+            MinWorkdayLengthInMinutes = 5,
+            AutoEndWorkdayLengthInMinutes = 720,
+            MinBreakBetweenWorkdaysInMinutes = 480,
+            MinWorkdayLengthForBreakInMinutes = 5,
+            MinBreakLengthInMinutes = 2,
+        };
+
+        context.WorkSettings.AddRange(settings);
         await context.SaveChangesAsync();
     }
 }
