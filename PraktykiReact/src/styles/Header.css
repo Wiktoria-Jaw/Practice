@@ -2,31 +2,33 @@ header{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 30px 30px;
   background-color: #1b1c1d;
   color: #dfe0e2;
+  padding: 30px 30px;
 }
 
 header > h1{
   margin: 0;
-  font-weight: 700;
+  font-weight: 600;
+  width: fit-content;
 }
 
-header > h1 >span{
+.helloSpan{
   background-color: #bdbe57;
   color: #1b1c1d;
+  padding: 0 10px;
 }
 
 nav > a{
   padding: 0 10px;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   text-decoration: none;
   color: #dfe0e2;
   font-weight: 500;
-  height: auto;
+  height: 98px;
 }
 
-nav > a:hover, a:active{
+nav > a:hover{
   background-color: #bdbe57;
   color: #1b1c1d;
 }

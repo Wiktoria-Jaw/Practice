@@ -1,23 +1,28 @@
 .log-form{
     display: flex;
     flex-direction: column;
-    margin: 40px 20px;
+    margin-top: 20px;
     align-items: center;
+    margin-bottom: 30px;
 }
 
 input{
-    width: 40%;
-    margin: 20px;
-    height: 30px;
-    font-size: 1.2rem;
+    margin: 10px;
+    height: 35px;
+    font-size: 1.3rem;
+    border-radius: 8px;
+    padding-left: 10px;
+    font-family: "League Gothic", sans-serif;
+    width: 338px;
 }
 
-label{
-    font-size: 1.2rem;
-    font-weight: 500;
+.loginText{
+    font-size: 1.4rem;
+    margin: 10px;
 }
 
-/* h1{
-    font-weight: 500;
-    font-size: 1.5rem;
-} */
+.information{
+    font-weight: normal;
+    min-width: 40%;
+    margin: 10px;
+}

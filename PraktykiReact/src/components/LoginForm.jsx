@@ -22,11 +22,13 @@ export default function LoginForm(props){
     return (
         <>
             <form onSubmit={handleSubmit} className="log-form">
-                <input id="login" name="login" placeholder="Login" value={login} onChange={e=> setLogin(e.target.value)}/>
+                <p className="loginText">Login</p>
+                <input id="login" name="login" type="text" placeholder="Login" value={login} onChange={e=> setLogin(e.target.value)}/>
+                <p className="loginText">Password</p>
                 <input id="password" name="password" type="password" value={password} onChange={e=> setPassword(e.target.value)} placeholder="Password"/>
                 <Button type="submit" label="Log In" disabled={!login || !password}/>
-        </form>
-        {!!message && (<h1>{message}</h1>)}
+            </form>
+            {!!message && (<h1 className="information">{message}</h1>)}
         </>
         
     )

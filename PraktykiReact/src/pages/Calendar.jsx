@@ -110,13 +110,17 @@ export default function Calendar(props){
     const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     const monthName = months[month-1];
     const Info = message !== "";
+    const today = new Date();
+    
+
+    if(today)
 
     return(
         <main className="calendar">
             <div className="calendar-header">
-                <Button label="<-" onClick={() => previousMonth()}/>
+                <Button label="<" onClick={() => previousMonth()}/>
                 <span>{monthName} {year}</span>
-                <Button label="->" onClick={() => nextMonth()}/>
+                <Button label=">" onClick={() => nextMonth()}/>
             </div>
             <div className="calendar-dayheader">
                 {weekDays.map((d, idx) => (
@@ -125,6 +129,7 @@ export default function Calendar(props){
             </div>
             <div className="calendar-grid">
                 {days.map((day, index) => {
+                    const isToday = today.getFullYear() === year && today.getMonth() === month-1 && today.getDate() === day.day;
                     const style = index === 0 ? {gridColumnStart: firstDayOfMonth} : {};
                     return (
                         <DayCard
@@ -133,6 +138,7 @@ export default function Calendar(props){
                             employees = {day.employees}
                             style={style}
                             isSelected = {selectedDays.includes(day.day)}
+                            isToday = {isToday}
                             onClick={()=>handleDayClick(day.day)}
                         />
                     );

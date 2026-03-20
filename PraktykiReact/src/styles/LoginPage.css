@@ -1,15 +1,22 @@
 .login-page{
     text-align: center;
-    margin: 200px 30px;
+    margin: 200px auto;
     color: #dfe0e2;
+    background-color: #2a2a2b;
+    border: solid, 7px, #bdbe57;
+    padding: 30px;
+    border-radius: 10px;
+    width: 50%;
+}
+
+.login-page >h2{
+    margin: 10px auto;
+    font-weight: normal;
 }
 
 .login{
-    margin: 20px;
     font-size: 3rem;
-    padding: 10px;
-    background-color: #bdbe57;
-    color: #1b1c1d;;
-    width: 38%;
+    min-width: 40%;
     margin: auto;
+    font-weight: normal;
 }

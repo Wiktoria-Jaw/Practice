@@ -2,7 +2,7 @@ import "../styles/DayCard.css";
 
 export default function DayCard(props){
     const hasDaysOff = props.employees.length > 0;
-    const dayCardClass = `day-card ${props.isSelected ? "selected" : ""}`;
+    const dayCardClass = `day-card ${props.isSelected ? "selected" : ""} ${props.isToday && !props.isSelected ? "today" : ""}`;
     return(
         <div className = {dayCardClass} style={props.style} onClick={props.onClick}>
             <h1>{props.Num}</h1>
