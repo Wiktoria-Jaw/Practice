@@ -1,0 +1,40 @@
+.manage-calendar{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: #2a2a2b;
+}
+
+.manage-calendar > h2{
+    margin: 30px;
+    font-weight: normal;
+    font-size: 3rem;
+}
+
+.pending-table{
+    padding: 20px;
+}
+
+.pending-table > thead > tr > th{
+    font-weight: normal;
+    font-size: 2rem;
+    padding: 10px;
+    background-color: #bdbe57;
+    color: #1b1c1d;
+}
+
+.pending-table > tbody > tr > td{
+    font-weight: normal;
+    font-size: 1.5rem;
+    padding: 10px;
+    border-bottom: 2px solid #bdbe57;
+}
+
+.actions{
+    display:flex;
+    justify-content: space-evenly;
+}
+
+.actionButton{
+    width: 200px;
+}

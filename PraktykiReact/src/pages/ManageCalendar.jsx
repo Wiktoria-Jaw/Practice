@@ -44,7 +44,6 @@ export default function ManageCalendar(){
                             <th>End Date</th>
                             <th>Actions</th>
                         </tr>
-                        
                     </thead>
                     <tbody>
                         {pendingDaysOff.map((req) => (
@@ -53,8 +52,8 @@ export default function ManageCalendar(){
                                 <td>{req.startDate}</td>
                                 <td>{req.endDate}</td>
                                 <td className="actions"> 
-                                    <Button label="Accept" onClick={() => handleDecision(req.id, "accepted")}/>
-                                    <Button label="Reject" onClick={() => handleDecision(req.id, "rejected")}/>
+                                    <Button class="actionButton" label="Accept" onClick={() => handleDecision(req.id, "accepted")}/>
+                                    <Button class="actionButton" label="Reject" onClick={() => handleDecision(req.id, "rejected")}/>
                                 </td>
                             </tr>
                         ))}
