@@ -73,3 +73,24 @@ Content-Type: application/json
 PUT {{PraktykiAPI_HostAddress}}/logout/{{emplID}}
 
 ###
+
+PUT {{PraktykiAPI_HostAddress}}/api/day_off/adminPanel/daysoff/decide
+Content-Type: application/json
+
+{
+  //DayOffDecisionRequest
+}
+
+###
+
+GET {{PraktykiAPI_HostAddress}}/api/day_off/adminPanel/daysoff
+
+###
+
+PUT {{PraktykiAPI_HostAddress}}/api/day_off/adminPanel/daysoff/decide
+Content-Type: application/json
+{
+
+}
+
+###

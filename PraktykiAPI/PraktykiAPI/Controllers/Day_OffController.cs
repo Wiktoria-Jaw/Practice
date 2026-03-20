@@ -62,12 +62,53 @@ namespace PraktykiAPI.Controllers
             public DateOnly EndDate { get; set; }
         }
 
-        //[HttpGet("adminPanel/daysoff")]
-        //public async Task<IActionResult> GetAllDaysOff()
-        //{
-        //    var daysoff = await _context.DaysOff.Select(d => new { d.StartDate, d.EndDate, d.Employee.FirstName, d.Employee.MiddleName, d.Employee.LastName }).ToListAsync();
-        //    return Ok(daysoff);
-        //}
+        [HttpGet("adminPanel/daysoff/pending")]
+        public async Task<IActionResult> GetPendingDaysOff()
+        {
+            var daysoff = await _context.DaysOff.Where(d => d.AcceptStatus == "pending").Select(d => new { d.StartDate, d.EndDate, d.Employee.FirstName, d.Employee.MiddleName, d.Employee.LastName, d.AcceptStatus, d.ID }).ToListAsync();
+            return Ok(daysoff);
+        }
+
+        [HttpGet("adminPanel/daysoff/accepted")]
+        public async Task<IActionResult> AdminGetAcceptedDaysOff()
+        {
+            var daysoff = await _context.DaysOff.Where(d => d.AcceptStatus == "accepted").Select(d => new { d.StartDate, d.EndDate, d.Employee.FirstName, d.Employee.MiddleName, d.Employee.LastName, d.AcceptStatus, d.ID }).ToListAsync();
+            return Ok(daysoff);
+        }
+
+        [HttpGet("adminPanel/daysoff/rejected")]
+        public async Task<IActionResult> GetRejectedDaysOff()
+        {
+            var daysoff = await _context.DaysOff.Where(d => d.AcceptStatus == "rejected").Select(d => new { d.StartDate, d.EndDate, d.Employee.FirstName, d.Employee.MiddleName, d.Employee.LastName, d.AcceptStatus, d.ID }).ToListAsync();
+            return Ok(daysoff);
+        }
+
+        [HttpPut("adminPanel/daysoff/decide")]
+        public async Task<IActionResult> DecideDayOff([FromBody] DayOffDecisionRequest request)
+        {
+            var dayOff = await _context.DaysOff.FindAsync(request.DayOffID);
+
+            if (dayOff == null)
+            {
+                return BadRequest(new { message = "Day off request not found."});
+            }
+
+            if (dayOff.AcceptStatus == "accepted" && dayOff.AcceptStatus == "rejected")
+            {
+                return BadRequest(new { message = "This request was already decided."});
+            }
+
+            dayOff.AcceptStatus = request.Status;
+            await _context.SaveChangesAsync();
+
+            return Ok(new {message="Decision saved."});
+        }
+
+        public class DayOffDecisionRequest
+        {
+            public int DayOffID { get; set; }
+            public string Status { get; set; }
+        }
 
         private bool Day_OffExists(int id)
         {

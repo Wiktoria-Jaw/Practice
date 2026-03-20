@@ -31,14 +31,52 @@ export const declareDayOff = async (emplID, startDate, endDate) => {
     return data;
 }
 
-// export const getAllDaysOff = async (emplID) => {
-//     const response = await fetch(`${API_URL}/adminPanel/daysoff`,{
-//         method: "GET"
-//     });
-//     if(!response.ok){
-//         const error = await response.json();
-//         throw new Error(error.message);
-//     }
-//     const data = await response.json();
-//     return data;
-// }
+export const adminGetAcceptedDaysOff = async (emplID) => {
+    const response = await fetch(`${API_URL}/adminPanel/daysoff/accepted`,{
+        method: "GET"
+    });
+    if(!response.ok){
+        const error = await response.json();
+        throw new Error(error.message);
+    }
+    const data = await response.json();
+    return data;
+}
+
+export const adminGetPendingDaysOff = async (emplID) => {
+    const response = await fetch(`${API_URL}/adminPanel/daysoff/pending`,{
+        method: "GET"
+    });
+    if(!response.ok){
+        const error = await response.json();
+        throw new Error(error.message);
+    }
+    const data = await response.json();
+    return data;
+}
+
+export const adminGetRejectedDaysOff = async (emplID) => {
+    const response = await fetch(`${API_URL}/adminPanel/daysoff/rejected`,{
+        method: "GET"
+    });
+    if(!response.ok){
+        const error = await response.json();
+        throw new Error(error.message);
+    }
+    const data = await response.json();
+    return data;
+}
+
+export const DecideDayOff = async ({DayoffID, Status}) =>{
+    const response = await fetch(`${API_URL}/adminPanel/daysoff/decide`,{
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({DayoffID, Status})
+    });
+    if(!response.ok){
+        const error = await response.json();
+        throw new Error(error.message);
+    }
+    const data = await response.json();
+    return data;
+}

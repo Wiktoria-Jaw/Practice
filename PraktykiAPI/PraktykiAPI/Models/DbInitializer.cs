@@ -7,11 +7,6 @@ public class DbInitializer
 {
     public static async Task InitializeAsync(AppDbContext context)
     {
-        if (await context.Employees.AnyAsync())
-        {
-            return;
-        }
-
         var employee = new Employee()
         {
             FirstName = "Test",
@@ -37,8 +32,11 @@ public class DbInitializer
             PhoneNumber = "000000000",
         };
 
-        context.Employees.AddRange(employee, employee2, employee3);
-        await context.SaveChangesAsync();
+        if (!await context.Employees.AnyAsync())
+        {
+            context.Employees.AddRange(employee, employee2, employee3);
+            await context.SaveChangesAsync();
+        }
 
         var dayOff = new DayOff()
         {
@@ -62,8 +60,11 @@ public class DbInitializer
             EmployeeID = employee.ID,
         };
 
-        context.DaysOff.AddRange(dayOff, dayOff2, dayOff3);
-        await context.SaveChangesAsync();
+        if (!await context.DaysOff.AnyAsync()) 
+        {
+            context.DaysOff.AddRange(dayOff, dayOff2, dayOff3);
+            await context.SaveChangesAsync();
+        }
 
         var settings = new WorkSettings()
         {
@@ -74,8 +75,11 @@ public class DbInitializer
             MinBreakLengthInMinutes = 2,
         };
 
-        context.WorkSettings.Add(settings);
-        await context.SaveChangesAsync();
+        if (!await context.WorkSettings.AnyAsync())
+        {
+            context.WorkSettings.Add(settings);
+            await context.SaveChangesAsync();
+        }
 
         var user = new User()
         {
@@ -111,7 +115,10 @@ public class DbInitializer
 
         user3.Password = hasher.HashPassword(user3, "admin");
 
-        context.Users.AddRange(user, user2, user3);
-        await context.SaveChangesAsync();
+        if (!await context.Users.AnyAsync())
+        {
+            context.Users.AddRange(user, user2, user3);
+            await context.SaveChangesAsync();
+        }
     }
 }

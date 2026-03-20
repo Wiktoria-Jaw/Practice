@@ -3,6 +3,7 @@ import MainContent from "./components/MainContent.jsx"
 import Calendar from "./pages/Calendar.jsx"
 import LoginPage from "./pages/LoginPage.jsx"
 import ManageWorkrules from "./pages/ManageWorkrules.jsx"
+import ManageCalendar from "./pages/ManageCalendar.jsx"
 import { useState } from "react"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 
@@ -22,6 +23,7 @@ export default function App(){
                 <Route path="/calendar" element={<Calendar year={today.getFullYear()} month={today.getMonth() +1} emplID={user.id}/>}/>
                 <Route path="*" element={<Navigate to="/"/>}/>
                 <Route path="/manage-workrules" element={<ManageWorkrules/>}/>
+                <Route path="/manage-calendar" element={<ManageCalendar/>}/>
               </>
             )}
           </Routes>
