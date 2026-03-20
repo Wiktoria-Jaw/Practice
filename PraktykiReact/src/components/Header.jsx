@@ -8,6 +8,9 @@ export default function Header(props){
             <nav>
                 <Link to ="/">Home</Link>
                 <Link to ="/calendar">Calendar</Link>
+                {props.Permission === "admin" && (<Link to="/manage-calendar">Manage Calendar</Link>)}
+                {props.Permission === "admin" && (<Link to="/manage-workrules">Manage Work Rules</Link>)}
+                {props.Permission === "admin" && (<Link to="/check-summary">Summary</Link>)}
                 <Link to ="/log-out">Log out</Link>
             </nav>
         </header>
