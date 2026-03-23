@@ -20,5 +20,9 @@ It works that way bc it's first version of this app. Later I will add login so e
 !!!!! ------------------------- !!!!!
 
 Info:
+<<<<<<< HEAD
 
 Branch 'ver1.0' works on other database then 'ver2.0', you cant test each version on same database. Im too lazy to change and its only backend. Major changes: Most dates and time got merged with DataTime.
+=======
+1. Branch 'ver1.0' works on other database then 'ver2.0', you cant test each version on same database. Im too lazy to change and its only backend. Major changes: Most dates and time got merged with DataTime.
+>>>>>>> be2bb6988e9d6d893bc5fd7f4afb4dfe09d34015
