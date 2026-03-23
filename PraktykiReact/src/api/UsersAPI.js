@@ -7,18 +7,11 @@ export const loginUser = async ({login, password}) => {
         body: JSON.stringify({login, password})
     });
 
-    let data = null;
-
-    try{
-        data = await response.json();
-    }catch{
-        throw new Error("Server returned invalid response");
-    }
-
     if(!response.ok){
-        throw new Error(data?.message || "Login failed");
+        const error = await response.json();
+        throw new Error(error.message);
     }
-
+    const data = await response.json();
     return data;
 }
 

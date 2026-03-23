@@ -94,3 +94,16 @@ Content-Type: application/json
 }
 
 ###
+
+GET {{PraktykiAPI_HostAddress}}/api/worksettings/adminPanel/workrules
+
+###
+
+PUT {{PraktykiAPI_HostAddress}}/api/worksettings/adminPanel/workrules/update
+Content-Type: application/json
+
+{
+  //NewWorkRules
+}
+
+###

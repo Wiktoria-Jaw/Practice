@@ -1,0 +1,23 @@
+.manage-workrules{
+    display: flex;
+    flex-direction: column;
+    background-color: #2a2a2b;
+    align-items: center;
+}
+
+.manage-workrules > h2{
+    margin: 30px;
+    font-weight: normal;
+    font-size: 3.2rem;
+}
+
+.info{
+    font-weight: normal;
+    font-size: 1.5rem;
+    margin: 10px;
+}
+
+.workrules{
+    font-size: 1.5rem;
+    margin: 25px;
+}
