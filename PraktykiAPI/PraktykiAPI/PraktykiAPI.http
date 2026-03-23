@@ -107,3 +107,12 @@ Content-Type: application/json
 }
 
 ###
+
+PUT {{PraktykiAPI_HostAddress}}/api/worksettings/adminPanel/workrules/update
+Content-Type: application/json
+
+{
+
+}
+
+###

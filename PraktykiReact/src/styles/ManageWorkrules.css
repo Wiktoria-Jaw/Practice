@@ -3,12 +3,14 @@
     flex-direction: column;
     background-color: #2a2a2b;
     align-items: center;
+    width: 70%;
+    margin: 70px auto;
 }
 
 .manage-workrules > h2{
     margin: 30px;
     font-weight: normal;
-    font-size: 3.2rem;
+    font-size: 3rem;
 }
 
 .info{

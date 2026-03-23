@@ -25,4 +25,5 @@ export const logoutUser = async (emplID) => {
     }
     const data = await response.json();
     return data;
+    
 }

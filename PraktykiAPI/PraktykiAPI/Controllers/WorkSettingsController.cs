@@ -127,11 +127,11 @@ namespace PraktykiAPI.Controllers
         
         public class NewWorkRules
         {
-           public int? MinWorkdayLength { get; set; }
-           public int? AutoEndWorkday { get; set; }
-           public int? MinBreakBetweenWorkdays { get; set; }
-           public int? MinWorkdayLengthForBreak { get; set; }
-           public int? MinBreakLength { get; set; }
+            public int? MinWorkdayLength { get; set; }
+            public int? AutoEndWorkday { get; set; }
+            public int? MinBreakBetweenWorkdays { get; set; }
+            public int? MinWorkdayLengthForBreak { get; set; }
+            public int? MinBreakLength { get; set; }
         }
 
         private bool WorkSettingsExists(int id)

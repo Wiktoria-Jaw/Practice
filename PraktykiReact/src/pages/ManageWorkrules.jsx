@@ -7,11 +7,11 @@ import {GetWorkSettings, UpdateWorkSettings} from "../api/WorkrulesAPI.js";
 export default function ManageWorkrules(){
     const [workrules, setWorkrules] = useState({ MinWorkdayLength: 0, AutoEndWorkday: 0, MinBreakBetweenWorkdays: 0, MinWorkdayLengthForBreak: 0, MinBreakLength: 0});
     const [message, setMessage] = useState("");
-    const [MinWorkdayLength, setMinWorkdayLength] = useState("")
-    const [AutoEndWorkday, setAutoEndWorkday] = useState("")
-    const [MinBreakBetweenWorkdays, setMinBreakBetweenWorkdays] = useState("")
-    const [MinWorkdayLengthForBreak, setMinWorkdayLengthForBreak] = useState("")
-    const [MinBreakLength, setMinBreakLength] = useState("")
+    const [MinWorkdayLength, setMinWorkdayLength] = useState(null)
+    const [AutoEndWorkday, setAutoEndWorkday] = useState(null)
+    const [MinBreakBetweenWorkdays, setMinBreakBetweenWorkdays] = useState(null)
+    const [MinWorkdayLengthForBreak, setMinWorkdayLengthForBreak] = useState(null)
+    const [MinBreakLength, setMinBreakLength] = useState(null)
 
     const fetchWorkRules = async() => {
         try{
@@ -26,11 +26,11 @@ export default function ManageWorkrules(){
         fetchWorkRules();
     },[]);
 
-    const handleChange = async(e) => {
-        e.preventDefault();
+    const handleChange = async() => {
         try{
             const result = await UpdateWorkSettings({MinWorkdayLength, AutoEndWorkday, MinBreakBetweenWorkdays, MinWorkdayLengthForBreak, MinBreakLength})
             setMessage(result.message);
+            console.log(MinWorkdayLength, AutoEndWorkday, MinBreakBetweenWorkdays, MinWorkdayLengthForBreak, MinBreakLength );
         }catch(error){
             setMessage(error.message);
         }
@@ -48,8 +48,8 @@ export default function ManageWorkrules(){
                 <WorkRulesPar label="Min Workday for Brea" name="MinWorkdayLengthForBreak" currValue={workrules.MinWorkdayLengthForBreak} value={MinWorkdayLengthForBreak} setter={setMinWorkdayLengthForBreak}/>
                 <WorkRulesPar label="Minimum Break" name="MinBreakLength" currValue={workrules.MinBreakLength} value={MinBreakLength} setter={setMinBreakLength}/>
             </div>
-            <Button onClick={() => handleChange} label="Update Work Rules"/>
-            {!!message && (<p className="info">{message}.</p>)}
+            <Button onClick={handleChange} label="Update Work Rules"/>
+            {!!message && (<p className="info">{message}</p>)}
         </main>
     )
 }
