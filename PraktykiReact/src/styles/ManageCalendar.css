@@ -1,21 +1,21 @@
-.manage-calendar{
+.manage-calendar , .see-dayOffHistory{
     display: flex;
     flex-direction: column;
     text-align: center;
     background-color: #2a2a2b;
 }
 
-.manage-calendar > h2{
+.manage-calendar > h2, .see-dayOffHistory >h2{
     margin: 30px;
     font-weight: normal;
     font-size: 3rem;
 }
 
-.pending-table{
+.pending-table, .history-table{
     padding: 20px;
 }
 
-.pending-table > thead > tr > th{
+.pending-table > thead > tr > th, .history-table > thead > tr > th{
     font-weight: normal;
     font-size: 2rem;
     padding: 10px;
@@ -23,7 +23,7 @@
     color: #1b1c1d;
 }
 
-.pending-table > tbody > tr > td{
+.pending-table > tbody > tr > td, .history-table > tbody > tr > td{
     font-weight: normal;
     font-size: 1.5rem;
     padding: 10px;
