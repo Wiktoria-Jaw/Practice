@@ -56,7 +56,6 @@ namespace PraktykiAPI.Controllers
                 return BadRequest(new { message = "Employee not found." });
             }
 
-            user.IsLogIn = 1;
             await _context.SaveChangesAsync();
 
             return Ok(new { id =user.EmployeeID, firstName = employee.FirstName, middleName = employee.MiddleName, lastName = employee.LastName, permission=user.Permission, login=user.Login});
@@ -77,7 +76,6 @@ namespace PraktykiAPI.Controllers
                 return BadRequest(new {message="User not found."});
             }
 
-            user.IsLogIn = 0;
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Sucessfully log out." });

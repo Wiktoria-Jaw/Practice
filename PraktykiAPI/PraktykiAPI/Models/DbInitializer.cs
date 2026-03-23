@@ -7,118 +7,91 @@ public class DbInitializer
 {
     public static async Task InitializeAsync(AppDbContext context)
     {
-        var employee = new Employee()
+        var EmployeesData = new[]
         {
-            FirstName = "Test",
-            LastName = "Employee",
-            Email = "test@gmail.com",
-            PhoneNumber = "123456789",
+            new Employee { FirstName = "Test", LastName = "Employee", Email = "test@gmail.com", PhoneNumber = "123456789"},
+            new Employee { FirstName = "Stanley", MiddleName = "Bucket", LastName = "Parable", Email = "stanley@gmail.com", PhoneNumber = "987654321"},
+            new Employee { FirstName = "The", LastName = "Narrator", Email = "narrator@gmail.com", PhoneNumber = "000000000" }
         };
 
-        var employee2 = new Employee()
+        foreach (var emp in EmployeesData)
         {
-            FirstName = "Stanley",
-            MiddleName = "Bucket",
-            LastName = "Parable",
-            Email = "stanley@gmail.com",
-            PhoneNumber = "987654321",
-        };
-
-        var employee3 = new Employee()
-        {
-            FirstName = "The",
-            LastName = "Narrator",
-            Email = "narrator@gmail.com",
-            PhoneNumber = "000000000",
-        };
-
-        if (!await context.Employees.AnyAsync())
-        {
-            context.Employees.AddRange(employee, employee2, employee3);
-            await context.SaveChangesAsync();
+            var exist = await context.Employees.FirstOrDefaultAsync(e => e.Email == emp.Email);
+            if (exist == null)
+            {
+                context.Employees.Add(emp);
+            }
         }
 
-        var dayOff = new DayOff()
+        await context.SaveChangesAsync();
+
+        var allEmpl = await context.Employees.ToListAsync();
+
+        var dayOffData = new (DateOnly Start, DateOnly End, string EmlpEmail, string? Status)[]
         {
-            StartDate = new DateOnly(2026, 3, 18),
-            EndDate = new DateOnly(2026, 3, 18),
-            EmployeeID = employee.ID,
+            (new DateOnly(2026, 3, 18), new DateOnly(2026, 3, 18), "test@gmail.com", null),
+            (new DateOnly(2026, 3, 18), new DateOnly(2026, 3, 22), "stanley@gmail.com", null),
+            (new DateOnly(2026, 3, 30), new DateOnly(2026, 4, 3), "test@gmail.com", "accepted")
         };
 
-        var dayOff2 = new DayOff()
+        foreach (var d in dayOffData)
         {
-            StartDate = new DateOnly(2026, 3, 18),
-            EndDate = new DateOnly(2026, 3, 22),
-            EmployeeID = employee2.ID,
+            var employee = allEmpl.First(e => e.Email == d.EmlpEmail);
+            var exists = await context.DaysOff.AnyAsync(x => x.EmployeeID == employee.ID && x.StartDate == d.Start && x.EndDate == d.End);
+
+            if (!exists)
+            {
+                context.DaysOff.Add(new DayOff
+                {
+                    StartDate = d.Start,
+                    EndDate = d.End,
+                    AcceptStatus = d.Status ?? "pending", 
+                    EmployeeID = employee.ID,
+                });
+            }
         };
 
-        var dayOff3 = new DayOff()
-        {
-            StartDate = new DateOnly(2026, 3, 30),
-            EndDate = new DateOnly(2026, 4, 3),
-            AcceptStatus = "accepted",
-            EmployeeID = employee.ID,
-        };
-
-        if (!await context.DaysOff.AnyAsync()) 
-        {
-            context.DaysOff.AddRange(dayOff, dayOff2, dayOff3);
-            await context.SaveChangesAsync();
-        }
-
-        var settings = new WorkSettings()
-        {
-            MinWorkdayLengthInMinutes = 5,
-            AutoEndWorkdayLengthInMinutes = 720,
-            MinBreakBetweenWorkdaysInMinutes = 480,
-            MinWorkdayLengthForBreakInMinutes = 5,
-            MinBreakLengthInMinutes = 2,
-        };
+        await context.SaveChangesAsync();
 
         if (!await context.WorkSettings.AnyAsync())
         {
-            context.WorkSettings.Add(settings);
+            context.WorkSettings.Add(new WorkSettings
+            {
+                MinWorkdayLengthInMinutes = 5,
+                AutoEndWorkdayLengthInMinutes = 720,
+                MinBreakBetweenWorkdaysInMinutes = 480,
+                MinWorkdayLengthForBreakInMinutes = 5,
+                MinBreakLengthInMinutes = 2,
+            });
             await context.SaveChangesAsync();
         }
-
-        var user = new User()
-        {
-            Login = "TEmployee",
-            Permission = "employee",
-            IsActive = 1,
-            IsLogIn = 0,
-            EmployeeID = employee.ID,
-        };
 
         var hasher = new PasswordHasher<User>();
-        user.Password = hasher.HashPassword(user, "abcd");
 
-        var user2 = new User()
+        var UsersData = new[]
         {
-            Login = "SBParable",
-            Permission = "employee",
-            IsActive = 1,
-            IsLogIn = 0,
-            EmployeeID = employee2.ID,
+            new {Login = "TEmployee", Password="abcd", Permission = "employee", emplEmail = "test@gmail.com"},
+            new {Login = "SBParable", Password="1234", Permission = "employee", emplEmail = "stanley@gmail.com"},
+            new {Login = "TNarrator", Password="admin", Permission = "admin", emplEmail = "narrator@gmail.com"}
         };
 
-        user2.Password = hasher.HashPassword(user2, "1234");
-
-        var user3 = new User()
+        foreach(var u in UsersData)
         {
-            Login = "TNarrator",
-            Permission = "admin",
-            IsActive = 1,
-            IsLogIn = 0,
-            EmployeeID = employee3.ID,
-        };
-
-        user3.Password = hasher.HashPassword(user3, "admin");
-
-        if (!await context.Users.AnyAsync())
-        {
-            context.Users.AddRange(user, user2, user3);
-            await context.SaveChangesAsync();
+            var exist = await context.Users.FirstOrDefaultAsync(x => x.Login == u.Login);
+            if(exist == null)
+            {
+                var employee = allEmpl.First(e => e.Email == u.emplEmail);
+                context.Users.Add(new User
+                {
+                    Login = u.Login,
+                    Password = hasher.HashPassword(null, u.Password),
+                    Permission = u.Permission,
+                    IsActive = 1,
+                    IsLogIn = 0,
+                    EmployeeID = employee.ID,
+                });
+            }
         }
+        await context.SaveChangesAsync();
     }
 }

@@ -14,7 +14,6 @@ namespace PraktykiAPI.Models
         [Required]
         public int EmployeeID { get; set; }
         
-
         [ForeignKey("EmployeeID")]
         public Employee Employee { get; set; }
 

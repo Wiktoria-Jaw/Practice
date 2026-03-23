@@ -13,6 +13,7 @@ namespace PraktykiAPI.Models
         [Required]
         public DateOnly EndDate { get; set; }
         [Required]
+        [MaxLength(10)]
         public string AcceptStatus { get; set; } = "pending";
         [Required]
         public int EmployeeID { get; set; }

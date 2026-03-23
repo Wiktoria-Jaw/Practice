@@ -9,16 +9,21 @@ namespace PraktykiAPI.Models
         [Key]
         public int ID { get; set; }
         [Required]
+        [MaxLength(50)]
         public string FirstName { get; set; }
+        [MaxLength(50)]
         public string? MiddleName { get; set; }
         [Required]
+        [MaxLength(50)]
         public string LastName { get; set; }
         [Required]
+        [MaxLength(255)]
         public string Email { get; set; }
+        [MaxLength(25)]
         public string? PhoneNumber { get; set;}
 
         public ICollection<WorkDay> WorkDays { get; set; }
-        public User User { get; set; } //relacja 1:1 a nie 1:wielu
+        public User User { get; set; }
         public ICollection<DayOff> DaysOff { get; set; }
     }
 }
