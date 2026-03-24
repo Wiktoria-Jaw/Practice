@@ -66,21 +66,6 @@ namespace PraktykiAPI.Controllers
             public string Password { get; set; }
         }
 
-        [HttpPut("logout/{emplID}")]
-        public async Task<IActionResult> Logout(int emplID)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.EmployeeID == emplID);
-
-            if(user == null)
-            {
-                return BadRequest(new {message="User not found."});
-            }
-
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Sucessfully log out." });
-        }
-
         private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.ID == id);

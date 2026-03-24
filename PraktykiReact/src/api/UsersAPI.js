@@ -14,16 +14,3 @@ export const loginUser = async ({login, password}) => {
     const data = await response.json();
     return data;
 }
-
-export const logoutUser = async (emplID) => {
-    const response = await fetch(`${API_URL}/logout/${emplID}`,{
-        method: "PUT"
-    });
-    if(!response.ok){
-        const error = await response.json();
-        throw new Error(error.message);
-    }
-    const data = await response.json();
-    return data;
-    
-}
