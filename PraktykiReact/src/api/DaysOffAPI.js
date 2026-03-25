@@ -1,6 +1,6 @@
 const API_URL = "https://localhost:7164/api/day_off"
 
-export const getAcceptedDaysOff = async (emplID) => {
+export const getAcceptedDaysOff = async () => {
     const response = await fetch(`${API_URL}/emplPanel/daysoff/accepted`,{
         method: "GET"
     });
@@ -31,7 +31,7 @@ export const declareDayOff = async (emplID, startDate, endDate) => {
     return data;
 }
 
-export const adminGetAcceptedDaysOff = async (emplID) => {
+export const adminGetAcceptedDaysOff = async () => {
     const response = await fetch(`${API_URL}/adminPanel/daysoff/accepted`,{
         method: "GET"
     });
@@ -43,7 +43,7 @@ export const adminGetAcceptedDaysOff = async (emplID) => {
     return data;
 }
 
-export const adminGetPendingDaysOff = async (emplID) => {
+export const adminGetPendingDaysOff = async () => {
     const response = await fetch(`${API_URL}/adminPanel/daysoff/pending`,{
         method: "GET"
     });
@@ -55,7 +55,7 @@ export const adminGetPendingDaysOff = async (emplID) => {
     return data;
 }
 
-export const adminGetRejectedDaysOff = async (emplID) => {
+export const adminGetRejectedDaysOff = async () => {
     const response = await fetch(`${API_URL}/adminPanel/daysoff/rejected`,{
         method: "GET"
     });

@@ -27,6 +27,15 @@ namespace PraktykiAPI.Controllers
 
             return Ok(employee);
         }
+
+        [HttpGet("employee/allemployee")]
+        public async Task<IActionResult> AdminGetAllEmployeeData(
+            )
+        {
+            var employees = await _context.Employees.Select(e=> new { e.FirstName, e.MiddleName, e.LastName, e.ID}).ToListAsync();
+
+            return Ok(employees);
+        }
         private bool EmployeeExists(int id)
         {
             return _context.Employees.Any(e => e.ID == id);

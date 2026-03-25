@@ -6,6 +6,7 @@ import ManageWorkrules from "./pages/ManageWorkrules.jsx"
 import ManageCalendar from "./pages/ManageCalendar.jsx"
 import { useEffect, useState } from "react"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import Summary from "./pages/Summary.jsx"
 
 export default function App(){
   const [user, setUser] = useState(null);
@@ -32,6 +33,7 @@ export default function App(){
                 <Route path="*" element={<Navigate to="/"/>}/>
                 <Route path="/manage-workrules" element={<ManageWorkrules/>}/>
                 <Route path="/manage-calendar" element={<ManageCalendar/>}/>
+                <Route path="/check-summary" element={<Summary/>}/>
               </>
             )}
           </Routes>
