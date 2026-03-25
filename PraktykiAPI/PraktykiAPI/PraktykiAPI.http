@@ -116,3 +116,7 @@ Content-Type: application/json
 }
 
 ###
+
+GET {{PraktykiAPI_HostAddress}}/api/day_off/adminPanel/summary/{{emplID}}/{{date}}
+
+###

@@ -80,3 +80,15 @@ export const DecideDayOff = async ({DayoffID, Status}) =>{
     const data = await response.json();
     return data;
 }
+
+export const GetSummary = async (emplID,date) => {
+    const response = await fetch(`${API_URL}/adminPanel/summary/${emplID}/${date}`,{
+        method: "GET",
+    });
+    if(!response.ok){
+        const error = await response.json();
+        throw new Error(error.message);
+    }
+    const data = await response.json();
+    return data;
+}

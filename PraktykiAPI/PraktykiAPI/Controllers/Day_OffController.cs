@@ -110,6 +110,44 @@ namespace PraktykiAPI.Controllers
             public string Status { get; set; }
         }
 
+        [HttpGet("adminPanel/summary/{emplID}/{date}")]
+        public async Task<IActionResult> GetSummary(int emplID, DateOnly date)
+        {
+            var employee = await _context.Employees.FindAsync(emplID);
+
+            if (employee == null)
+            {
+                return BadRequest(new { message = "There is no employee with that id." });
+            }
+
+            var IsDayOff = await _context.DaysOff.Where(d => d.StartDate <= date && d.EndDate >= date && d.AcceptStatus == "accepted").AnyAsync();
+
+            if (IsDayOff)
+            {
+                return Ok(new {status="dayOff", message = "Had day off."});
+            }
+
+            DateTime startDay = date.ToDateTime(TimeOnly.MinValue);
+            DateTime startNextDay = date.ToDateTime(TimeOnly.MaxValue);
+
+            var selectedDay = await _context.WorkSchedule.Where(w => (w.WorkStart.Date >= startDay && w.WorkStart < startNextDay && w.EmployeeID == emplID) || (w.WorkEnd >= startDay && w.WorkEnd < startNextDay && w.EmployeeID == emplID)).Include(w => w.Breaks).FirstOrDefaultAsync();
+
+            if (selectedDay == null)
+            {
+                return BadRequest(new { message = "No workday in this date." });
+            }
+
+            TimeSpan workdayLength = (selectedDay.WorkEnd ?? DateTime.Now) - selectedDay.WorkStart;
+
+            int totalBreaks = selectedDay.Breaks.Count;
+
+            TimeSpan totalBreaksLength = TimeSpan.FromTicks(selectedDay.Breaks.Sum(b => ((b.BreakEnd ?? DateTime.Now) - b.BreakStart).Ticks));
+
+            TimeSpan totalWorkLength = workdayLength - totalBreaksLength;
+
+            return Ok(new { status = "workday", wdLength = workdayLength, allBreaks = totalBreaks, allBLength = totalBreaksLength, finalWDLength = totalWorkLength});
+        }
+
         private bool Day_OffExists(int id)
         {
             return _context.DaysOff.Any(e => e.ID == id);
