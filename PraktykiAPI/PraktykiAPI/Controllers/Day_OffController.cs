@@ -163,7 +163,7 @@ namespace PraktykiAPI.Controllers
                 e.FirstName,
                 e.MiddleName,
                 e.LastName,
-                DaysOffCount = e.DaysOff.Where(d=> d.StartDate <= endMonth && d.EndDate >= startMonth).Sum(d=> ((d.EndDate < endMonth ? d.EndDate : endMonth).DayNumber) - ((d.StartDate > startMonth ? d.StartDate : startMonth).DayNumber) + 1 )
+                DaysOffCount = e.DaysOff.Where(d=> d.StartDate <= endMonth && d.EndDate >= startMonth && d.AcceptStatus == "accepted").Sum(d=> ((d.EndDate < endMonth ? d.EndDate : endMonth).DayNumber) - ((d.StartDate > startMonth ? d.StartDate : startMonth).DayNumber) + 1 )
             }).ToList();
 
             
