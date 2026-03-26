@@ -1,0 +1,34 @@
+header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1b1c1d;
+  color: #dfe0e2;
+  padding: 30px 30px;
+}
+
+header > h1{
+  margin: 0;
+  font-weight: normal;
+  width: fit-content;
+}
+
+.helloSpan{
+  background-color: #bdbe57;
+  color: #1b1c1d;
+  padding: 0 10px;
+}
+
+nav > a{
+  padding: 0 10px;
+  font-size: 1.6rem;
+  text-decoration: none;
+  color: #dfe0e2;
+  font-weight: 500;
+  height: 98px;
+}
+
+nav > a:hover{
+  background-color: #bdbe57;
+  color: #1b1c1d;
+}

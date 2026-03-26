@@ -1,0 +1,24 @@
+button{
+  font-size: 1.7rem;
+  width: 350px;
+  height: 60px;
+  background-color: #1b1c1d;
+  color: #dfe0e2;
+  border-radius: 10px;
+  border: none;
+  margin: 20px;
+  font-family: "League Gothic", sans-serif;
+  letter-spacing: 1px;
+}
+
+button:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #1b1c1d;
+  color: #dfe0e2;
+}
+
+button:not(:disabled):hover{
+  background-color: #bdbe57;
+  color: #1b1c1d;
+}

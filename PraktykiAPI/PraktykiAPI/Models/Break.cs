@@ -3,18 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PraktykiAPI.Models
 {
-    [Table("Break_Timetable")]
+    [Table("Breaks")]
     public class Break
     {
         [Key]
         public int ID { get; set; }
         [Required]
-        public TimeOnly Break_Start_Hour { get; set; }
-        public TimeOnly? Break_End_Hour { get; set; }
+        public DateTime BreakStart { get; set; }
+        public DateTime? BreakEnd { get; set; }
         [Required]
-        public int WorkDay_Id { get; set; }
+        public int WorkDayID { get; set; }
 
-        [ForeignKey("WorkDay_Id")]
+
+        [ForeignKey("WorkDayID")]
         public WorkDay WorkDay { get; set; }
     }
 }

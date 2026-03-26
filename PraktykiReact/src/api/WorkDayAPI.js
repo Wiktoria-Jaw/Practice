@@ -5,11 +5,11 @@ export const startWorkday = async (emplID) => {
         method: "POST"
     });
     if(!response.ok){
-        const error = await response.text();
-        throw new Error(error);
+        const error = await response.json()
+        throw new Error(error.message);
     }
-    
-    return response.text();
+    const data = await response.json();
+    return data;
 }
 
 export const endWorkday = async (emplID) => {
@@ -18,20 +18,21 @@ export const endWorkday = async (emplID) => {
     });
 
     if(!response.ok){
-        const error = await response.text();
-        throw new Error(error);
+        const error = await response.json()
+        throw new Error(error.message);
     }
-
-    return response.text();
+    const data = await response.json();
+    return data;
 }
 
 export const statusWorkday = async (emplID) => {
     const response = await fetch(`${API_URL}/emplPanel/workday/status/${emplID}`,{
         method: "GET"
     });
-
     if(!response.ok){
-        alert("Failed to fetch work status");
+        const error = await response.json()
+        throw new Error(error.message);
     }
-    return response.text();
+    const data = await response.json();
+    return data;
 }

@@ -1,0 +1,15 @@
+.workrulesPara{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #bdbe57; ;
+}
+
+input{
+    margin-left: 5px;
+}
+
+span{
+    padding-right: 30px;
+}

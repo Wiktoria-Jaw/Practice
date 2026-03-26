@@ -1,0 +1,29 @@
+.summary-panel{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: #2a2a2b;
+    width: 70%;
+    margin: 10px auto;
+    border-top: 2px solid #bdbe57;
+}
+
+.summary-panel > h2{
+    margin: 30px;
+    font-weight: normal;
+    font-size: 3rem;
+}
+
+.summary{
+    font-size: 1.5rem;
+    border-bottom: 2px solid #bdbe57;
+    width: 40%;
+    padding: 5px 20px;
+}
+
+.workday-summary{
+    text-align: justify;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

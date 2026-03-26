@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace PraktykiAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260310122350_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260319112938_AddWorkSettings")]
+    partial class AddWorkSettings
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,23 +32,23 @@ namespace PraktykiAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<TimeOnly?>("Break_End_Hour")
-                        .HasColumnType("time");
+                    b.Property<DateTime?>("BreakEnd")
+                        .HasColumnType("datetime2");
 
-                    b.Property<TimeOnly>("Break_Start_Hour")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("BreakStart")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("WorkDay_Id")
+                    b.Property<int>("WorkDayID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("WorkDay_Id");
+                    b.HasIndex("WorkDayID");
 
-                    b.ToTable("Break_Timetable");
+                    b.ToTable("Breaks");
                 });
 
-            modelBuilder.Entity("PraktykiAPI.Models.Day_Off", b =>
+            modelBuilder.Entity("PraktykiAPI.Models.DayOff", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -56,24 +56,24 @@ namespace PraktykiAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("Employee_ID")
-                        .HasColumnType("int");
-
-                    b.Property<DateOnly>("End_Date")
-                        .HasColumnType("date");
-
-                    b.Property<DateOnly>("Start_Date")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Status")
+                    b.Property<string>("AcceptStatus")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("EmployeeID")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("Employee_ID");
+                    b.HasIndex("EmployeeID");
 
-                    b.ToTable("Days_Off");
+                    b.ToTable("DaysOff");
                 });
 
             modelBuilder.Entity("PraktykiAPI.Models.Employee", b =>
@@ -84,66 +84,28 @@ namespace PraktykiAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phone_Number")
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Surname")
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
                     b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("PraktykiAPI.Models.User", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int>("Employee_ID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Is_Active")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Is_LogIn")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Permission")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("Employee_ID")
-                        .IsUnique();
-
-                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("PraktykiAPI.Models.WorkDay", b =>
@@ -154,52 +116,66 @@ namespace PraktykiAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
-
-                    b.Property<int>("Employee_Id")
+                    b.Property<int>("EmployeeID")
                         .HasColumnType("int");
 
-                    b.Property<TimeOnly?>("Work_End_Hour")
-                        .HasColumnType("time");
+                    b.Property<DateTime?>("WorkEnd")
+                        .HasColumnType("datetime2");
 
-                    b.Property<TimeOnly>("Work_Start_Hour")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("WorkStart")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("Employee_Id");
+                    b.HasIndex("EmployeeID");
 
-                    b.ToTable("Work_Timetable");
+                    b.ToTable("WorkSchedule");
+                });
+
+            modelBuilder.Entity("PraktykiAPI.Models.WorkSettings", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int?>("AutoEndWorkdayLengthInMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MinBreakBetweenWorkdaysInMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MinBreakLengthInMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MinWorkdayLengthForBreakInMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MinWorkdayLengthInMinutes")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("WorkSettings");
                 });
 
             modelBuilder.Entity("PraktykiAPI.Models.Break", b =>
                 {
                     b.HasOne("PraktykiAPI.Models.WorkDay", "WorkDay")
                         .WithMany("Breaks")
-                        .HasForeignKey("WorkDay_Id")
+                        .HasForeignKey("WorkDayID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("WorkDay");
                 });
 
-            modelBuilder.Entity("PraktykiAPI.Models.Day_Off", b =>
+            modelBuilder.Entity("PraktykiAPI.Models.DayOff", b =>
                 {
                     b.HasOne("PraktykiAPI.Models.Employee", "Employee")
-                        .WithMany("Days_Off")
-                        .HasForeignKey("Employee_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("PraktykiAPI.Models.User", b =>
-                {
-                    b.HasOne("PraktykiAPI.Models.Employee", "Employee")
-                        .WithOne("User")
-                        .HasForeignKey("PraktykiAPI.Models.User", "Employee_ID")
+                        .WithMany("DaysOff")
+                        .HasForeignKey("EmployeeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -210,7 +186,7 @@ namespace PraktykiAPI.Migrations
                 {
                     b.HasOne("PraktykiAPI.Models.Employee", "Employee")
                         .WithMany("WorkDays")
-                        .HasForeignKey("Employee_Id")
+                        .HasForeignKey("EmployeeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -219,10 +195,7 @@ namespace PraktykiAPI.Migrations
 
             modelBuilder.Entity("PraktykiAPI.Models.Employee", b =>
                 {
-                    b.Navigation("Days_Off");
-
-                    b.Navigation("User")
-                        .IsRequired();
+                    b.Navigation("DaysOff");
 
                     b.Navigation("WorkDays");
                 });

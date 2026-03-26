@@ -23,84 +23,101 @@ namespace PraktykiAPI.Controllers
         [HttpPost("emplPanel/workday/break/start/{emplID}")]
         public async Task<IActionResult> StartBreak(int emplID)
         {
-            DateOnly nowDate = DateOnly.FromDateTime(DateTime.Now);
-            TimeOnly nowTime = TimeOnly.FromDateTime(DateTime.Now);
-            var workday = await _context.Work_Timetable.FirstOrDefaultAsync(w => w.Date == nowDate && w.Employee_Id == emplID && w.Work_End_Hour == null);
+            var workday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID && w.WorkEnd == null).OrderByDescending(w => w.WorkStart).FirstOrDefaultAsync();
 
-            if(workday == null)
+            var settings = await _context.WorkSettings.FirstOrDefaultAsync();
+
+            if (workday == null)
             {
-                return BadRequest("No such workday/Workday already done today.");
+                return BadRequest(new { status = "error", message = "Workday not started." });
             }
 
-            bool breakRunning = await _context.Break_Timetable.AnyAsync(b => b.WorkDay_Id == workday.ID && b.Break_End_Hour == null);
+            var timeFromStartingWorkday = DateTime.Now - workday.WorkStart;
+
+            TimeSpan minWorkdayForBreakLength = TimeSpan.FromMinutes(settings?.MinWorkdayLengthForBreakInMinutes ?? 10);
+
+            if (timeFromStartingWorkday < minWorkdayForBreakLength)
+            {
+                return BadRequest(new { status = "error", message = "Break is not allowed yet." });
+            }
+
+            bool breakRunning = await _context.Breaks.AnyAsync(b => b.WorkDayID == workday.ID && b.BreakEnd == null);
 
             if (breakRunning)
-            {   
-                return BadRequest("Break already started.");
+            {
+                return BadRequest(new { status = "error", message = "Break already started." });
             }
 
             Break newBreak = new Break()
             {
-                WorkDay_Id = workday.ID,
-                Break_Start_Hour = nowTime,
+                WorkDayID = workday.ID,
+                BreakStart = DateTime.Now,
             };
 
-            _context.Break_Timetable.Add(newBreak);
+            _context.Breaks.Add(newBreak);
             await _context.SaveChangesAsync();
 
-            return Ok("Break started.");
+            return Ok(new { status = "finished", startTime = newBreak.BreakStart, endTime = newBreak.BreakEnd, message = "Break started" });
         }
 
         [HttpPut("emplPanel/workday/break/end/{emplID}")]
         public async Task<IActionResult> EndBreak(int emplID)
         {
-            DateOnly nowDate = DateOnly.FromDateTime(DateTime.Now);
-            TimeOnly nowTime = TimeOnly.FromDateTime(DateTime.Now);
-            var workday = await _context.Work_Timetable.FirstOrDefaultAsync(w => w.Date == nowDate && w.Employee_Id == emplID && w.Work_End_Hour == null);
+            var workday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID && w.WorkEnd == null).OrderByDescending(w => w.WorkStart).FirstOrDefaultAsync();
+
+            var settings = await _context.WorkSettings.FirstOrDefaultAsync();
 
             if (workday == null)
             {
-                return BadRequest("No such workday/Workday already done today.");
+                return BadRequest(new { status = "error", message = "Workday not started." });
             }
 
-            var breakCur = await _context.Break_Timetable.FirstOrDefaultAsync(b => b.WorkDay_Id == workday.ID && b.Break_End_Hour == null);
+            var breakCur = await _context.Breaks.Where(b => b.WorkDayID == workday.ID && b.BreakEnd == null).OrderByDescending(b=> b.BreakStart).FirstOrDefaultAsync();
 
             if (breakCur == null)
             {
-                return BadRequest("No active break");
+                return BadRequest(new { status = "error", message = "No active break" });
             }
 
-            breakCur.Break_End_Hour = nowTime;
+            TimeSpan minBreakLength = TimeSpan.FromMinutes(settings?.MinBreakLengthInMinutes ?? 5);
+
+            var breakDuration = DateTime.Now - breakCur.BreakStart;
+
+            if (breakDuration < minBreakLength)
+            {
+                return BadRequest(new { status = "error", message = "Break is too short." });
+            }
+
+            breakCur.BreakEnd = DateTime.Now;
 
             await _context.SaveChangesAsync();
 
-            return Ok("Break ended.");
+            return Ok(new { status = "finished", startTime = breakCur.BreakStart, endTime = breakCur.BreakEnd, message = "Break ended." });
         }
 
         [HttpGet("emplPanel/workday/break/status/{emplID}")]
-        public async Task<IActionResult> getWorkdayStatus(int emplID)
+        public async Task<IActionResult> getBreakStatus(int emplID)
         {
-            DateOnly nowDate = DateOnly.FromDateTime(DateTime.Now);
-            var workday = await _context.Work_Timetable.FirstOrDefaultAsync(w => w.Date == nowDate && w.Employee_Id == emplID && w.Work_End_Hour == null);
+            var workday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID && w.WorkEnd == null).OrderByDescending(w => w.WorkStart.Date).FirstOrDefaultAsync();
 
             if (workday == null)
             {
-                return Ok("noBreakStarted");
+                return Ok(new { status = "notStarted", startTime = (DateTime?)null, endTime = (DateTime?)null });
             }
 
-            var breakCur = await _context.Break_Timetable.FirstOrDefaultAsync(b => b.WorkDay_Id == workday.ID && b.Break_End_Hour == null);
+            var lastBreak = await _context.Breaks.Where(b => b.WorkDayID == workday.ID).OrderByDescending(b => b.BreakStart).FirstOrDefaultAsync();
 
-            if (breakCur == null)
+            if (lastBreak == null)
             {
-                return Ok("noBreakStarted");
+                return Ok(new {status = "notStarted", startTime = (DateTime?)null, endTime = (DateTime?)null });
             }
 
-            return Ok("onBreak");
+            return Ok(new { status = lastBreak.BreakEnd == null ? "onBreak" : "finished", startTime = lastBreak.BreakStart, endTime = lastBreak.BreakEnd });
         }
 
         private bool BreakExists(int id)
         {
-            return _context.Break_Timetable.Any(e => e.ID == id);
+            return _context.Breaks.Any(e => e.ID == id);
         }
     }
 }

@@ -24,120 +24,91 @@ namespace PraktykiAPI.Controllers
         [HttpPost("emplPanel/workday/start/{emplID}")]
         public async Task<IActionResult> StartWorkday(int emplID)
         {
-            DateOnly now = DateOnly.FromDateTime(DateTime.Now);
-            bool alreadyStarted = await _context.Work_Timetable.AnyAsync(w=>w.Employee_Id == emplID && w.Date == now);
+            var lastWorkday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID).OrderByDescending(w=>w.WorkStart).FirstOrDefaultAsync();
 
-            if (alreadyStarted)
+            var settings = await _context.WorkSettings.FirstOrDefaultAsync();
+
+            TimeSpan autoEndWorkdayLength = TimeSpan.FromMinutes(settings?.AutoEndWorkdayLengthInMinutes ?? 960);
+
+            if (lastWorkday != null && lastWorkday.WorkEnd == null)
             {
-                return BadRequest("Workday already started.");
+                var duration = DateTime.Now - lastWorkday.WorkStart;
+                if (duration > autoEndWorkdayLength)
+                {
+                    lastWorkday.WorkEnd = DateTime.Now;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    return BadRequest(new { status = "error", message="Workday already started."});
+                }
+            }
+
+            TimeSpan breakBetweenWorkdaysLength = TimeSpan.FromMinutes(settings?.MinBreakBetweenWorkdaysInMinutes ?? 480);
+
+            if (lastWorkday != null && lastWorkday.WorkEnd != null)
+            {
+                var timeSinceEnd = DateTime.Now - lastWorkday.WorkEnd.Value;
+                if(timeSinceEnd < breakBetweenWorkdaysLength)
+                {
+                    return BadRequest(new { status = "error", message = "You must wait before starting a new workday." });
+                }
             }
 
             WorkDay newWorkDay = new WorkDay()
             {
-                Date = now,
-                Employee_Id = emplID,
-                Work_Start_Hour = TimeOnly.FromDateTime(DateTime.Now),
+                WorkStart = DateTime.Now,
+                EmployeeID = emplID,
             };
-            
-            _context.Work_Timetable.Add(newWorkDay);
+
+            _context.WorkSchedule.Add(newWorkDay);
             await _context.SaveChangesAsync();
 
-            return Ok("Workday started.");
+            return Ok(new { status = "working", message = "Workday started." });
         }
 
         [HttpPut("emplPanel/workday/end/{emplID}")]
-        public async Task<IActionResult> EndtWorkday(int emplID)
+        public async Task<IActionResult> EndWorkday(int emplID)
         {
-            DateOnly now = DateOnly.FromDateTime(DateTime.Now);
-            var workday = await _context.Work_Timetable.FirstOrDefaultAsync(w => w.Employee_Id == emplID && w.Date == now);
+            var workday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID && w.WorkEnd == null).OrderByDescending(w => w.WorkStart).FirstOrDefaultAsync();
+
+            var settings = await _context.WorkSettings.FirstOrDefaultAsync();
 
             if (workday == null)
             {
-                return BadRequest("Workday wasn't started.");
+                return BadRequest(new { status = "error", message = "Workday wasn't started." });
             }
 
-            if(workday.Work_End_Hour != null)
+            TimeSpan minWorkdayLength = TimeSpan.FromMinutes(settings?.MinWorkdayLengthInMinutes ?? 10);
+            var duration = DateTime.Now - workday.WorkStart;
+
+            if (duration < minWorkdayLength)
             {
-                return BadRequest("Workday already ended.");
+                return BadRequest(new { status = "error", message = "Workday too short." });
             }
 
-            workday.Work_End_Hour = TimeOnly.FromDateTime(DateTime.Now);
+            workday.WorkEnd = DateTime.Now;
 
             await _context.SaveChangesAsync();
 
-            return Ok("Workday ended.");
+            return Ok(new { status = "finished", startTime = workday.WorkStart, endTime = workday.WorkEnd, message = "Workday ended." });
         }
 
         [HttpGet("emplPanel/workday/status/{emplID}")]
         public async Task<IActionResult> getWorkdayStatus(int emplID)
         {
-            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
-            var workday = await _context.Work_Timetable.FirstOrDefaultAsync(w => w.Employee_Id == emplID && w.Date == today);
+            var workday = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID).OrderByDescending(w => w.WorkStart).FirstOrDefaultAsync();
 
             if (workday == null)
             {
-                return Ok("notStarted");
+                return Ok( new { status = "notStarted", startTime = (DateTime?)null, endTime = (DateTime?)null });
             }
 
-            if (workday.Work_End_Hour == null)
-            {
-                return Ok("working");
-            }
-
-            return Ok("ended");
+            return Ok(new { status = workday.WorkEnd == null ? "working" : "finished", startTime = workday.WorkStart, endTime = workday.WorkEnd });
         }
-
-
-        //[HttpGet("workday/admin/{id}/{date}")]
-        //public async Task<IActionResult> GetWorkdayLength(DateOnly date, int id)
-        //{
-        //    var workday = await _context.Work_Timetable.Where(w => _context.Employees.Any(e => e.ID == w.Employee_Id && w.Employee_Id == id && w.Date == date)).Select(w => new {Duration = w.Work_End_Hour - w.Work_Start_Hour}).ToListAsync();
-
-        //    return Ok(workday);
-        //}
-
-        //[HttpGet("workday/admin/{id}/{date_start}/{date_end}")]
-        //public async Task<IActionResult> GetWorkdayLengthWeek(DateOnly date_start, DateOnly date_end, int id)
-        //{
-        //    var workdays = await _context.Work_Timetable.Where(w => _context.Employees.Any(e=> e.ID == w.Employee_Id && w.Date >= date_start && w.Date <= date_end && w.Employee_Id == id)).Select(w=> new { w.Date, Duration = w.Work_End_Hour - w.Work_Start_Hour }).ToListAsync();
-
-        //    double WorkDuration = 0;
-
-        //    for (var day = date_start; day <= date_end; day = day.AddDays(1))
-        //    {
-        //        var workday = workdays.FirstOrDefault(w => w.Date == day);
-        //        if(workday != null)
-        //        {
-        //            WorkDuration += workday.Duration.TotalHours;
-        //        }
-        //    }
-
-        //    return Ok(WorkDuration);
-        //}
-
-        //[HttpGet("workday/admin/{id}/{month}")]
-        //public async Task<IActionResult> GetWorkdayLengthMonth(int month, int id)
-        //{
-        //    var workdays = await _context.Work_Timetable.Where(w=> _context.Employees.Any(e=> e.ID == w.Employee_Id && w.Date.Month == month && w.Employee_Id == id)).Select(w => new {w.Date, Duration = w.Work_End_Hour - w.Work_Start_Hour}).ToListAsync();
-
-        //    double workDuration = 0;
-        //    DateOnly start_day = new DateOnly(DateTime.Now.Year, month, 1);
-        //    DateOnly end_day = new DateOnly(DateTime.Now.Year, month, DateTime.DaysInMonth(DateTime.Now.Year, month));
-        //    for (var day = start_day; day <= end_day; day = day.AddDays(1))
-        //    {
-        //        var workday = workdays.FirstOrDefault(w => w.Date == day);
-        //        if (workday != null)
-        //        {
-        //            workDuration += workday.Duration.TotalHours;
-        //        }
-        //    }
-
-        //    return Ok(workDuration);
-        //}
-
         private bool WorkDayExists(int id)
         {
-            return _context.Work_Timetable.Any(e => e.ID == id);
+            return _context.WorkSchedule.Any(e => e.ID == id);
         }
     }
 }

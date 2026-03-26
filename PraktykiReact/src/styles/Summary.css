@@ -1,0 +1,70 @@
+.search-panel, .dayOffSearch-panel{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: #2a2a2b;
+    width: 70%;
+    margin: 70px auto;
+    padding: 30px;
+}
+
+.search-panel-flex{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.left-panel > h2, .right-panel > h2, .dayOffSearch-panel > h2{
+    margin: 30px;
+    font-weight: normal;
+    font-size: 3rem;
+}
+
+.span-search-panel, .span-dayOff-panel {
+    padding: 0;
+    font-size: 2rem;
+    align-items: center;
+    display: flex;
+}
+
+.span-dayOff-panel{
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.span-search-panel > input, .span-dayOff-panel > input{
+    margin-left: 20px;
+}
+
+.search-result{
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search-result > li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+    border-bottom: 2px solid #bdbe57;
+    width: 50%;
+    font-size: 1.5rem;
+}
+
+.search-result > li :hover{
+    background-color: #bdbe57;
+    color: #1b1c1d;
+}
+
+.result-span{
+    padding: 0;
+}
+
+.search-info{
+    margin: 0;
+    margin-bottom: 30px;
+}

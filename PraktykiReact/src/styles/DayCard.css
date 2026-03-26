@@ -1,0 +1,44 @@
+.day-card{
+    width: 100%;
+    height: 100%;
+    min-height: 100px;
+    background-color: #1b1c1d;
+    color: #dfe0e2;
+    font-family: "Inter", sans-serif;
+    margin: 3px;
+    border-radius: 5px;
+    border: none;
+}
+
+.whoHasDaysOff{
+    font-size: 0.8rem;
+    margin-top: 5px;
+    opacity: 0.7;
+    padding: 4px;
+}
+
+.day-card > h1{
+    font-weight: 500;
+    font-size: 1.6rem;
+    padding: 5px 10px;
+    margin: 0;
+}
+
+.employees{
+    height: auto;
+    overflow-x: auto;
+    padding: 4px;
+}
+
+.employeeNames{
+    font-size: 0.85rem;
+}
+
+.day-card.selected{
+    background-color: #bdbe57;
+    color: #1b1c1d;
+}
+
+.day-card.today{
+    box-shadow: inset 0 0 0 3px #bdbe57;
+}

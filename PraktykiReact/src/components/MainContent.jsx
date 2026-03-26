@@ -1,141 +1,106 @@
 import Button from "./Button.jsx"
+import Timelaps from "./Timelaps.jsx"
 import { startWorkday, endWorkday, statusWorkday } from "../api/WorkDayAPI"
 import { useState, useEffect} from "react"
 import { endBreak, startBreak, statusBreak } from "../api/BreakAPI.js"
+import "../styles/MainContent.css"
 
 export default function MainContent(props){
     const emplID = props.emplID;
-    const [workState, setWorkState] = useState(null)
+    const [workState, setWorkState] = useState(null);
+    const [workTime, setWorkTime] = useState({start: null, end: null});
+    const [breakState, setBreakState] = useState(null);
+    const [breakTime, setBreakTime] = useState({start: null, end: null});
     const [message, setMessage] = useState("");
 
-    useEffect(() => {
-        const fetchStatus = async () => {
+    const fetchStatus = async () => {
             try{
-                console.log("test pobierania statusu dnia");
-                const breakStatus = await statusBreak(emplID);
                 const workStatus = await statusWorkday(emplID);
-                console.log(breakStatus, workStatus)
-                let status;
-                if(workStatus === "notStarted" || workStatus === null){
-                    status = "notStarted"
-                }else if(workStatus === "ended"){
-                    status = "ended";
-                }else if(breakStatus === "onBreak"){
-                    status = "onBreak";
+                const breakStatus = await statusBreak(emplID);
+                console.log("Work status: ",workStatus.status);
+                console.log("Break status: ", breakStatus.status);
+                if(workStatus.status === "working"){
+                    setWorkState("working");
+                    setWorkTime({start: workStatus.startTime, end: workStatus.endTime});
+                }else if(workStatus.status === "finished"){
+                    setWorkState("finished");
+                    setWorkTime({start: workStatus.startTime, end: workStatus.endTime});
                 }else{
-                    status = "working";
+                    setWorkState("notStarted");
+                    setWorkTime({start: null, end: null});
                 }
-                console.log(status)
-
-                setWorkState(status);
+                
+                if(breakStatus === null || breakStatus.status === "notStarted"){
+                    setBreakState("notStarted");
+                    setBreakTime({start: null, end:null});
+                }else if(breakStatus.status == "onBreak"){
+                    setBreakState("onBreak");
+                    setBreakTime({start: breakStatus.startTime, end: breakStatus.endTime});
+                }else if (breakStatus.status === "finished"){
+                    setBreakState("finished");
+                    setBreakTime({start: breakStatus.startTime, end: breakStatus.endTime});
+                }
             }catch(error){
                 setMessage(error.message);
             }
         }
+
+    useEffect(() => {
         fetchStatus();
     }, [emplID]);
 
-    const handleAction = async (apiFunc) => {
+    const handleWorkAction = async (apiFunc) => {
         try{
-            console.log("emplID:",emplID);
-            const result = await apiFunc(emplID);
-            console.log("Api wynik:", result);
-            setMessage(result);
-            
-            const breakStatus = await statusBreak(emplID);
-            const workStatus = await statusWorkday(emplID);
-            console.log(breakStatus, workStatus)
-            let status;
-            if(workStatus === "notStarted" || workStatus === null){
-                status = "notStarted";
-            }else if(workStatus === "ended"){
-                status = "ended";
-            }else if(breakStatus === "onBreak"){
-                status = "onBreak";
-            }else{
-                status = "working";
-            }
-            console.log(status);
-            setWorkState(status);
-            
+            var result = await apiFunc(emplID);
+            await fetchStatus();
+            setMessage(result.message);
         }catch (error){
             setMessage(error.message);
         }
-    }
+    };
 
-    const handleEndWorkday = async () =>{
+    const handleBreakAction = async (apiFunc) => {
         try{
-            if(workState === "onBreak"){
-                await endBreak(emplID);
-            }
-
-            const result = await endWorkday(emplID);
-            setMessage(result);
-
-            const workStatus = await statusWorkday(emplID);
-            const breakStatus = await statusBreak(emplID);
-
-            let status;
-            if(workStatus === "notStarted" || workStatus === null){
-                status = "notStarted";
-            } else if(workStatus === "ended"){
-                status = "ended";
-            } else if(breakStatus === "onBreak"){
-                status = "onBreak";
-            } else {
-                status = "working";
-            }
-
-            setWorkState(status);
-        }catch(error){
+            var result = await apiFunc(emplID);
+            await fetchStatus();
+            setMessage(result.message);
+        }catch (error){
             setMessage(error.message);
         }
-    }
+    };
 
-    let workButton, breakButton, workButtonInfo, breakButtonInfo;
+    let workButton, breakButton;
+    if (workState === "notStarted") {
+        workButton = <Button label="Start Workday" onClick={() => handleWorkAction(startWorkday)} />
+    } else if (workState === "working") {
+        workButton = <Button label="End Workday" onClick={() => handleWorkAction(endWorkday)} />
+    } else {
+        workButton = <Button label="End Workday" disabled={true} />;
+    };
 
-    if(workState === null){
-        workButtonInfo = "Waiting for database...";
-        breakButtonInfo = "Waiting for database...";
-        workButton = <Button label="Start Workday" disabled={true}/>
-        breakButton= <Button label="Start Break" disabled={true}/>
-    }
-
-    if(workState==="notStarted"){
-        workButton = <Button label="Start Workday" onClick={() => handleAction(startWorkday, "working")}/>
-        workButtonInfo="Click to start your workday.";
-    }else if(workState === "working" || workState === "onBreak"){
-        workButton = <Button label="End Workday" onClick={() => handleEndWorkday()}/>
-        workButtonInfo="Click to end your workday.";
-    }else{
-        workButton = <Button label="End Workday" disabled={true}/>
-        workButtonInfo="Workday ended.";
-    }   
-
-    if(workState==="working"){
-        breakButton = <Button label="Start Break" onClick={()=> handleAction(startBreak)}/>
-        breakButtonInfo="You can start your break.";
-    }else if(workState==="onBreak"){
-        breakButton = <Button label="End Break" onClick={()=> handleAction(endBreak)}/>
-        breakButtonInfo="Currenly on break. Click to end your break.";
-    }else if(workState==="notStarted"){
-        breakButton = <Button label="Start Break" disabled={true}/>
-        breakButtonInfo="You need to start your workday first.";
-    }else{
-        breakButton = <Button label="Start Break" disabled={true}/>
-        breakButtonInfo="Workday ended, you can't start your break.";
-    }
+    if (breakState === "notStarted" && workState === "working") {
+        breakButton = <Button label="Start Break" onClick={() => handleBreakAction(startBreak)} />
+    } else if (breakState === "onBreak" && workState === "working") {
+        breakButton = <Button label="End Break" onClick={() => handleBreakAction(endBreak)} />
+    } else if (breakState === "finished" && workState === "working" ) {
+        breakButton = <Button label="Start Break" onClick={() => handleBreakAction(startBreak)} />
+    } else {
+        breakButton = <Button label="Start Break" disabled={true} />;
+    };
 
     return(
-        <main>
-            <div className="buttonNInfo">
-                {workButton}
-                <span className="infoSpan">{workButtonInfo}</span>
-            </div>
-            <div className="buttonNInfo">
-                {breakButton}
-                <span className="infoSpan">{breakButtonInfo}</span>
-            </div>
-        </main>
+        <>
+            <main>
+                <div className="buttonNInfo">
+                    {workButton}
+                    <Timelaps mode="work" start={workTime.start} end={workTime.end}/>
+                </div>
+                <div className="buttonNInfo">
+                    {breakButton}
+                    <Timelaps mode="break" start={breakTime.start} end={breakTime.end}/>
+                </div>
+            </main>
+            {!!message && (<p className="errorParagraf">Information: {message}</p>)}
+        </>
     )
 }

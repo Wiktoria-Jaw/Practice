@@ -1,0 +1,28 @@
+.log-form{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+input{
+    margin: 10px;
+    height: 35px;
+    font-size: 1.3rem;
+    border-radius: 8px;
+    padding-left: 10px;
+    font-family: "League Gothic", sans-serif;
+    width: 338px;
+}
+
+.loginText{
+    font-size: 1.4rem;
+    margin: 10px;
+}
+
+.information{
+    font-weight: normal;
+    min-width: 40%;
+    margin: 10px;
+}

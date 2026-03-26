@@ -1,0 +1,59 @@
+.calendar{
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin: 20px;
+  width: 100%;
+  align-self: center;
+  min-width: 500px;
+}
+
+.day-header {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.calendar-dayheader{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 10px;
+  height: 30px;
+  width: 100%;
+  align-self: center;
+  min-width: 500px;
+}
+
+.calendar-header{
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.calendar-header > button{
+  width: 60px;
+}
+
+.calendar-header > span, 
+.loading{
+  text-align: center;
+  margin: 30px;
+  font-size: 2rem;
+  color: #dfe0e2;
+}
+
+.action-buttons{
+  display: flex;
+  justify-content: center;
+  align-content: space-between;
+}
+
+.message{
+  color: #dfe0e2;
+  text-align: center;
+  font-size: 1.6rem;
+  margin: 30px;
+}
