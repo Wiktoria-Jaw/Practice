@@ -1,6 +1,7 @@
 import "../styles/Summary.css";
 import { useEffect, useState } from "react";
 import SummaryPanel from "../components/SummaryPanel.jsx";
+import DayOffSummaryPanel from "../components/DayOffSummaryPanel.jsx";
 import { getAllEmployeeData } from "../api/EmployeeAPI.js";
 
 export default function Summary(){
@@ -8,6 +9,7 @@ export default function Summary(){
     const [selectedDate, setSelectedDate] = useState("");
     const [employees, setEmployees] = useState([]);
     const [selectedEmployee, setSelectedEmployee] = useState("");
+    const [dayOffSelectedDate, setDayOffSelectedDate] = useState("");
     const [message, setMessage] = useState("");
 
     const fetchEmployeesData = async() => {
@@ -50,7 +52,7 @@ export default function Summary(){
                         </ul>
                     </div>
                     <div className="right-panel">
-                        <h2>Choice date</h2>
+                        <h2>Choose date</h2>
                         <span className="span-search-panel"> 
                             <label htmlFor="choiceDate">Date:</label>
                             <input type="date" id="choiceDate" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}/> 
@@ -58,11 +60,26 @@ export default function Summary(){
                     </div>
                 </div>
                 {!!message && (<p className="info">{message}</p>)}
+                {!!selectedEmployee && !!selectedDate && (
+                <SummaryPanel date = {selectedDate} id = {selectedEmployee.id} firstName = {selectedEmployee.firstName} middleName = {selectedEmployee.middleName} lastName = {selectedEmployee.lastName}/>
+                )}
+            </main>
+
+            
+
+            <main className="dayOffSearch-panel">
+                <h2>Choose Date</h2>
+                <p className="search-info">Any date, summary will be for chosen month and year</p>
+                <span className="span-dayOff-panel"> 
+                    <label htmlFor="dayOffDate">Date:</label>
+                    <input type="date" id="dayOffDate" value={dayOffSelectedDate} onChange={(e) => setDayOffSelectedDate(e.target.value)}/> 
+                </span>
+                {!!dayOffSelectedDate && (
+                <DayOffSummaryPanel date={dayOffSelectedDate}/>
+                )}
             </main>
             
-            {!!selectedEmployee && !!selectedDate && (
-                <SummaryPanel date = {selectedDate} id = {selectedEmployee.id} firstName = {selectedEmployee.firstName} middleName = {selectedEmployee.middleName} lastName = {selectedEmployee.lastName}/>
-            )}
+            
 
         </>
     )

@@ -4,8 +4,8 @@
     text-align: center;
     background-color: #2a2a2b;
     width: 70%;
-    margin: 70px auto;
-    padding: 30px;
+    margin: 10px auto;
+    border-top: 2px solid #bdbe57;
 }
 
 .summary-panel > h2{

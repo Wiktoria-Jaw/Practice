@@ -1,4 +1,4 @@
-.search-panel{
+.search-panel, .dayOffSearch-panel{
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -14,20 +14,25 @@
     justify-content: space-between;
 }
 
-.left-panel > h2, .right-panel > h2{
+.left-panel > h2, .right-panel > h2, .dayOffSearch-panel > h2{
     margin: 30px;
     font-weight: normal;
     font-size: 3rem;
 }
 
-.span-search-panel {
+.span-search-panel, .span-dayOff-panel {
     padding: 0;
     font-size: 2rem;
     align-items: center;
     display: flex;
 }
 
-.span-search-panel > input{
+.span-dayOff-panel{
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.span-search-panel > input, .span-dayOff-panel > input{
     margin-left: 20px;
 }
 
@@ -46,7 +51,7 @@
     align-items: center;
     padding: 5px 20px;
     border-bottom: 2px solid #bdbe57;
-    width: 40%;
+    width: 50%;
     font-size: 1.5rem;
 }
 
@@ -57,4 +62,9 @@
 
 .result-span{
     padding: 0;
+}
+
+.search-info{
+    margin: 0;
+    margin-bottom: 30px;
 }

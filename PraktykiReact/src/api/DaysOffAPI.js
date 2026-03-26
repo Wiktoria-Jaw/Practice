@@ -92,3 +92,15 @@ export const GetSummary = async (emplID,date) => {
     const data = await response.json();
     return data;
 }
+
+export const GetDayOffSummary = async(date) => {
+    const response = await fetch(`${API_URL}/adminPanel/dayoffSummary/${date}`, {
+        method: "GET",
+    });
+    if(!response.ok){
+        const error = await response.json();
+        throw new Error(error.message);
+    }
+    const data = await response.json();
+    return data;
+}

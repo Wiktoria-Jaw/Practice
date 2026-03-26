@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Humanizer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -130,7 +131,7 @@ namespace PraktykiAPI.Controllers
             DateTime startDay = date.ToDateTime(TimeOnly.MinValue);
             DateTime startNextDay = date.ToDateTime(TimeOnly.MaxValue);
 
-            var selectedDay = await _context.WorkSchedule.Where(w => (w.WorkStart.Date >= startDay && w.WorkStart < startNextDay && w.EmployeeID == emplID) || (w.WorkEnd >= startDay && w.WorkEnd < startNextDay && w.EmployeeID == emplID)).Include(w => w.Breaks).FirstOrDefaultAsync();
+            var selectedDay = await _context.WorkSchedule.Where(w => w.EmployeeID == emplID && ((w.WorkStart.Date >= startDay && w.WorkStart < startNextDay) || (w.WorkEnd >= startDay && w.WorkEnd < startNextDay))).Include(w => w.Breaks).FirstOrDefaultAsync();
 
             if (selectedDay == null)
             {
@@ -148,6 +149,26 @@ namespace PraktykiAPI.Controllers
             return Ok(new { status = "workday", wdLength = workdayLength, allBreaks = totalBreaks, allBLength = totalBreaksLength, finalWDLength = totalWorkLength});
         }
 
+        [HttpGet("adminPanel/dayoffSummary/{choosenDate}")]
+        public async Task<IActionResult> GetDayOffSummary(DateOnly choosenDate)
+        {
+            DateOnly startMonth = new DateOnly(choosenDate.Year, choosenDate.Month, 1);
+            DateOnly endMonth = new DateOnly(choosenDate.Year, choosenDate.Month, DateTime.DaysInMonth(choosenDate.Year, choosenDate.Month));
+
+            var employees = await _context.Employees.Include(e => e.DaysOff).ToListAsync();
+
+            var result = employees.Select(e=> new
+            {
+                e.ID,
+                e.FirstName,
+                e.MiddleName,
+                e.LastName,
+                DaysOffCount = e.DaysOff.Where(d=> d.StartDate <= endMonth && d.EndDate >= startMonth).Sum(d=> ((d.EndDate < endMonth ? d.EndDate : endMonth).DayNumber) - ((d.StartDate > startMonth ? d.StartDate : startMonth).DayNumber) + 1 )
+            }).ToList();
+
+            
+            return Ok(result);
+        }
         private bool Day_OffExists(int id)
         {
             return _context.DaysOff.Any(e => e.ID == id);
